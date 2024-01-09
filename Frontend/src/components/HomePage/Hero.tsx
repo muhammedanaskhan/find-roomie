@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 function Hero() {
   return (
-    <div className='w-3/4 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
+    <div className='w-5/6 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
       <div className='flex flex-col w-2/4 align-left justify-left text-left gap-8'>
         <div className='flex flex-col gap-4'>
           <p className='font-extrabold text-start text-5xl'>Find A <span className='text-primaryBlue'>Perfect Roommate</span>: Your Ideal Match Awaits!</p>
@@ -43,7 +43,7 @@ function Hero() {
 
       </div>
       <div className='h-full w-2/4 relative'>
-        <Image layout='fill' objectFit='contain' src='/phone_video_call.webp' alt='vector' />
+        <Image layout='fill' objectFit='contain' src='/games-time.svg' alt='vector' />
       </div>
 
     </div>
