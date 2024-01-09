@@ -10,7 +10,7 @@ function Hero() {
   return (
     <div className='w-5/6 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
       <div className='flex flex-col w-2/4 align-left justify-left text-left gap-8'>
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-6'>
           <p className='font-extrabold text-start text-5xl'>Find A <span className='text-primaryBlue'>Perfect Roommate</span>: Your Ideal Match Awaits!</p>
           <TypeAnimation
             sequence={[
