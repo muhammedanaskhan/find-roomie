@@ -18,6 +18,10 @@ app.use(express.urlencoded({
     limit: "16kb"
 }))
 
+app.get('/', (req, res) => {
+    res.send('Hello, this is the home page!');
+}); 
+
 // declare routes and attach routers
 
 import userRouter from './routes/user.routes';
