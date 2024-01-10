@@ -20,5 +20,9 @@ app.use(express.urlencoded({
 
 // declare routes and attach routers
 
+import userRouter from './routes/user.routes';
+
+app.use('/api/v1/users', userRouter)
+
 export {app}
 
