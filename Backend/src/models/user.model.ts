@@ -46,6 +46,10 @@ const UserSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        isUserAuthenticated:{
+            type: Boolean,
+            default: false
+        },
         preferences: {
             type: [
                 {
