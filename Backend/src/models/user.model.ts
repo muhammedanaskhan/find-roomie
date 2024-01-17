@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
+import jwt, {SignOptions} from 'jsonwebtoken'
 
 const UserSchema = new mongoose.Schema(
     {
-        userName:{
+        userName: {
             type: String,
             required: true,
             unique: true,
@@ -10,41 +12,41 @@ const UserSchema = new mongoose.Schema(
             trim: true,
             index: true
         },
-        email:{
+        email: {
             type: String,
             required: true,
             unique: true,
             lowercase: true,
             trim: true,
         },
-        password:{
+        password: {
             type: String,
             required: [true, 'Pasword is required']
         },
-        refreshToken:{
+        refreshToken: {
             type: String
         },
-        fullName:{
+        fullName: {
             type: String,
             required: true,
             trim: true,
             index: true
         },
-        avatar:{
+        avatar: {
             type: String,
             required: true
         },
-        gender:{
+        gender: {
             type: String,
             required: true,
             enum: ['Male', 'Female']
         },
-        contactNumber:{
+        contactNumber: {
             type: Number,
             required: true,
             unique: true
         },
-        preferences:{
+        preferences: {
             type: [
                 {
                     type: String,
@@ -72,10 +74,53 @@ const UserSchema = new mongoose.Schema(
                     // ]
                 }
             ],
-         
+
         }
     },
     { timestamps: true }
 )
 
-export const User = mongoose.model("User", UserSchema)
+UserSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return next()
+    }
+
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
+})
+
+interface UserDocument extends mongoose.Document {
+    isPasswordCorrect(password: string): Promise<boolean>
+    generateAccessToken(): Promise<string>
+    generateRefreshToken():Promise<string>
+}
+
+UserSchema.methods.isPasswordCorrect = async function (password: string) {
+    return await bcrypt.compare(password, this.password)
+}
+
+UserSchema.methods.generateAccessToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id
+        },
+        process.env.ACCESS_TOKEN_SECRET as jwt.Secret,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        } 
+    )
+}
+
+UserSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id
+        },
+        process.env.REFRESH_TOKEN_SECRET as jwt.Secret,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        } 
+    )
+}
+
+export const User = mongoose.model<UserDocument>("User", UserSchema)
