@@ -8,10 +8,10 @@ import Link from 'next/link'
 
 function Hero() {
   return (
-    <div className='w-5/6 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
-      <div className='flex flex-col w-2/4 align-left justify-left text-left gap-8'>
-        <div className='flex flex-col gap-6'>
-          <p className='font-extrabold text-start text-5xl'>Find A <span className='text-primaryBlue'>Perfect Roommate</span>: Your Ideal Match Awaits!</p>
+    <div className='w-10/12 lg:w-5/6 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
+      <div className='flex flex-col w-96 align-left justify-left text-left gap-8'>
+        <div className='flex flex-col gap-2 sm:gap-6'>
+          <p className='text-4xl font-extrabold text-start sm:text-5xl'>Find A <span className='text-primaryBlue'>Perfect Roommate</span>: Your Ideal Match Awaits!</p>
           <TypeAnimation
             sequence={[
               // Same substring at the start will only be typed out once, initially
@@ -25,13 +25,13 @@ function Hero() {
             wrapper="p"
             cursor={true}
             repeat={Infinity}
-            className="text-start text-2xl font-josefin-sans w-full text-neutral-700"
+            className="text-base text-start md:text-xl font-josefin-sans w-full text-neutral-700"
           />
         </div>
         <div className='flex flex-col gap-4'>
-          <div className="flex w-full gap-4  items-center space-x-2 relative">
+          <div className="flex flex-col md:flex-row w-full gap-4  items-center space-x-2 relative">
             <Input type="text" placeholder="Search Places..."></Input>
-            <Button className='px-12 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow' type="submit">Search</Button>
+            <Button className='w-full px-12 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow' type="submit">Search</Button>
           </div>
           <p className='text-slate-500'>
             <span className='font-bold'>Top cities: </span>
@@ -42,7 +42,7 @@ function Hero() {
         </div>
 
       </div>
-      <div className='h-full w-2/4 relative'>
+      <div className='hidden lg:flex h-full w-2/4 relative'>
         <Image layout='fill' objectFit='contain' src='/games-time.svg' alt='vector' />
       </div>
 
