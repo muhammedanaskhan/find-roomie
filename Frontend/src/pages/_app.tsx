@@ -6,6 +6,11 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import Nav from '@/components/Nav/Nav';
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
   subsets: ['latin'],
@@ -30,13 +35,19 @@ const lemon = Lemon({
 
 
 export default function App({ Component, pageProps }: AppProps) {
+
+  const queryClient = new QueryClient()
+
   return (
-  
-        <main	
-          className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable}`}
-        >
-           <Nav/>
-          <Component {...pageProps} />
-        </main>
-      );	
-    }
+
+    <main
+      className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable}`}
+    >
+      <QueryClientProvider client={queryClient}>
+        <Nav />
+        <Component {...pageProps} />
+      </QueryClientProvider>
+
+    </main>
+  );
+}

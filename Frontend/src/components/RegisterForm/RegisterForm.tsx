@@ -16,14 +16,15 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { userRegisterUserMutation } from "@/queries/profileQueries"
 
 const formSchema = z.object({
-    firstName:  z.string(),
-    lastName:  z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
     userName: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    email:  z.string().includes('@', {
+    email: z.string().includes('@', {
         message: "Invalid Email",
     }),
     password: z.string().min(8, {
@@ -33,6 +34,8 @@ const formSchema = z.object({
 
 export function RegisterForm() {
 
+    const {mutateAsync: registerUser, isLoading} = userRegisterUserMutation();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -40,11 +43,37 @@ export function RegisterForm() {
         },
     })
 
+    interface UserData {
+        fullName: string;
+        userName: string;
+        email: string;
+        password: string;
+    }
+
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+        const fullName: string = values.firstName.concat(" ", values.lastName)
+        const userName: string = values.userName
+        const email: string = values.email
+        const password: string = values.password
+
+        const userData: UserData = {
+            fullName,
+            userName,
+            email,
+            password
+        }
+
+        handleUserRegistration(userData)
+    }
+
+    const handleUserRegistration = async (userData: UserData) => {
+        try {
+            const result = registerUser(userData)
+            console.log("result", result)
+        } catch (error) {
+            console.log(`Error registering user ${error}`)
+        }
     }
 
     return (
