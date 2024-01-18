@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { userRegisterUserMutation } from "@/queries/profileQueries"
+import { useRegisterUserMutation } from "@/queries/profileQueries"
 
 const formSchema = z.object({
     firstName: z.string(),
@@ -34,7 +34,7 @@ const formSchema = z.object({
 
 export function RegisterForm() {
 
-    const {mutateAsync: registerUser, isLoading} = userRegisterUserMutation();
+    const {mutateAsync: registerUser} = useRegisterUserMutation();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

@@ -14,7 +14,7 @@ interface UserData {
   password: string;
 }
 
-export const userRegisterUserMutation = () => {
+export const useRegisterUserMutation = () => {
     const queryClient = useQueryClient();
     return useMutation<{ message: string }, Error, UserData>({
         mutationKey: ['register-user'],

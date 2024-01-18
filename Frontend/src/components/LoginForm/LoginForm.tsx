@@ -68,7 +68,7 @@ export function LoginForm() {
                     )}
                 />
 
-                <p>Don't have an account? <span><Link href='/register'>Register</Link></span></p>
+                <p>Don&apos;t have an account? <span><Link href='/register'>Register</Link></span></p>
                 <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
             </form>
         </Form>
