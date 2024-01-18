@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <section className=' bg-background200 min-h-screen flex justify-center items-center'>
+    <section className=' bg-background200 flex flex-1 justify-center items-center'>
       <Hero/>
     </section>
 

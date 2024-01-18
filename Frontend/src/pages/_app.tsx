@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
 
     <main
-      className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable}`}
+      className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen` }
     >
       <QueryClientProvider client={queryClient}>
         <Nav />
