@@ -34,17 +34,13 @@ const UserSchema = new mongoose.Schema(
         },
         avatar: {
             type: String,
-            required: true
         },
         gender: {
             type: String,
-            required: true,
             enum: ['Male', 'Female']
         },
         contactNumber: {
             type: Number,
-            required: true,
-            unique: true
         },
         isUserAuthenticated:{
             type: Boolean,

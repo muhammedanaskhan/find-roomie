@@ -48,21 +48,21 @@ const registerUser = AsyncHandler(async (req, res) => {
 
     const avatarLocalPath = (req.files as { avatar?: Express.Multer.File[] })?.avatar?.[0]?.path; 
 
-    if(!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
+    // if(!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
 
     //upload Avatar to cloudinary
 
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
+    // const avatar = await uploadOnCloudinary(avatarLocalPath)
 
-    if(!avatar){
-        throw new ApiError(400, 'Avatar not uploaded')
-    }
+    // if(!avatar){
+    //     throw new ApiError(400, 'Avatar not uploaded')
+    // }
 
     const user = await User.create(
         {
             userName,
             fullName,
-            avatar: avatar.url,
+            avatar: "",
             email,
             password,
             gender,
