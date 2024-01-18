@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 function Hero() {
   return (
-    <div className='w-10/12 lg:w-5/6 max-w-screen-2xl gap-16 flex flex-row items-center h-96'>
+    <div className='w-10/12 lg:w-5/6 max-w-6xl gap-12 flex flex-row justify-between items-center h-96'>
       <div className='flex flex-col w-96 align-left justify-left text-left gap-8'>
         <div className='flex flex-col gap-2 sm:gap-6'>
           <p className='text-4xl font-extrabold text-start sm:text-5xl'>Find A <span className='text-primaryBlue'>Perfect Roommate</span>: Your Ideal Match Awaits!</p>
