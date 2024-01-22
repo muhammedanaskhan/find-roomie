@@ -5,6 +5,7 @@ import { Collapse } from 'flowbite';
 import type { CollapseOptions, CollapseInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 import Link from 'next/link';
+import Image from 'next/image';
 
 
 function Nav() {
@@ -13,9 +14,9 @@ function Nav() {
     return (
         <div className='border-b-2 border-grayAlpha400 sticky top-0'>
             <nav className="bg-white border-gray-200 dark:bg-gray-900 w-full backdrop-blur">
-                <div className=" flex flex-wrap items-center justify-between mx-auto py-4 px-12 ">
+                <div className=" px-4 flex flex-wrap items-center justify-between mx-auto py-4 sm:px-12 ">
                     <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        <img src="/find-roomie.png" className="h-8" alt="Flowbite Logo" />
+                        <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority />
                         <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
                     </Link>
 
@@ -35,7 +36,7 @@ function Nav() {
                             </li>
                             <li>
                                 <Link href="#" className="block py-2 px-3 text-gray-500">Contact</Link>
-                            </li>
+                            </li> 
                         </ul>
                     </div>
                     <div className='hidden lg:flex gap-4'>

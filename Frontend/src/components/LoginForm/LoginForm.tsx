@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { useLoginUserQuery } from "@/queries/profileQueries"
 
 const formSchema = z.object({
     usernameOrEmail: z.string(),
@@ -26,14 +27,21 @@ const formSchema = z.object({
 
 export function LoginForm() {
 
+    const {mutateAsync: loginUser } = useLoginUserQuery(); 
+ 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+        if(values.usernameOrEmail.includes('@')){
+            const email = values.usernameOrEmail;
+            loginUser({email, password: values.password})
+        }else if(!values.usernameOrEmail.includes('@')){
+            const userName = values.usernameOrEmail;
+            loginUser({userName, password: values.password})
+        }
         console.log(values)
     }
 
