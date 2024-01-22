@@ -16,7 +16,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { useRegisterUserMutation } from "@/queries/profileQueries"
+import { useLoginUserQuery, useRegisterUserMutation } from "@/queries/profileQueries"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 const formSchema = z.object({
     firstName: z.string(),
@@ -34,7 +36,10 @@ const formSchema = z.object({
 
 export function RegisterForm() {
 
-    const {mutateAsync: registerUser} = useRegisterUserMutation();
+    const router = useRouter();
+
+    const[isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -43,10 +48,16 @@ export function RegisterForm() {
         },
     })
 
-    interface UserData {
+    interface RegisterUserData {
         fullName: string;
         userName: string;
         email: string;
+        password: string;
+    }
+
+    interface LoginUserData {
+        userName?: string;
+        email?: string;
         password: string;
     }
 
@@ -57,7 +68,7 @@ export function RegisterForm() {
         const email: string = values.email
         const password: string = values.password
 
-        const userData: UserData = {
+        const userData: RegisterUserData = {
             fullName,
             userName,
             email,
@@ -65,16 +76,31 @@ export function RegisterForm() {
         }
 
         handleUserRegistration(userData)
-    }
+    }   
 
-    const handleUserRegistration = async (userData: UserData) => {
+    const {mutateAsync: registerUser} = useRegisterUserMutation();
+    const {mutateAsync: loginUser } = useLoginUserQuery(); 
+ 
+    const handleUserRegistration = async (userData: RegisterUserData) => {
         try {
-            const result = registerUser(userData)
-            console.log("result", result)
+            const result = await registerUser(userData)
+            console.log("result", result.data.isUserAuthenticated)
+            
+            if(result.data.isUserAuthenticated){
+                router.push('user-profile')
+            }else{
+
+                const logindata: LoginUserData = {
+                    email : result.data.email,
+                    password : userData.password
+                }
+                loginUser(logindata)
+            }
         } catch (error) {
             console.log(`Error registering user ${error}`)
         }
     }
+
 
     return (
         <Form {...form}>
