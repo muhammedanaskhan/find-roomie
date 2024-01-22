@@ -73,7 +73,8 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
           borderRadius="md"
           minH="xs"
           justifyContent="space-between"
-          className="flex flex-col justify-between h-8 md:hidden "
+          bg={useColorModeValue("white", "gray.700")}
+          className="flex flex-col justify-between h-6 md:hidden shadow-md"
         >
           <Stack
             display={{
@@ -92,19 +93,13 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
                 item: { link: any; name: any },
                 index: React.Key | null | undefined
               ) => (
-                <Button
-                  key={index}
-                  as={Link}
-                  variant={"ghost"}
-                  size="sm"
-                  onClick={setOpen}
-                  colorScheme="blue"
+                <Link
+                key={index}
+                className="text-center text-primaryBlue font-semibold"
                   href={item.link}
-                  passHref
-                  _focus={{ boxShadow: "outline" }}
                 >
                   {item.name}
-                </Button>
+                </Link>
               )
             )}
           </Stack>
@@ -120,16 +115,16 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
           >
             {!user ? (
               <>
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                     <Button variant="outline" >Login</Button>
                     <Link href='/register'>
-                      <Button className='bg-primaryBlue text'>Sign Up</Button>
+                      <Button className='bg-primaryBlue text w-full'>Sign Up</Button>
                     </Link>
                   </div>
               </>
             ) : (
               <>
-                <HStack gap="2">
+                {/* <HStack gap="2">
                   <Button
                     colorScheme="blue"
                     as={Link}
@@ -174,7 +169,7 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
                       </MenuItem>
                     </MenuList>
                   </Menu>
-                </HStack>
+                </HStack> */}
               </>
             )}
           </Box>

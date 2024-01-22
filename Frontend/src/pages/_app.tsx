@@ -6,12 +6,17 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import Nav from '@/components/Nav/Nav';
 
+import Router from 'next/router';
+
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ChakraProvider } from '@chakra-ui/react'
 import Header from '@/components/Header';
+
+import NProgress from "nprogress";
+import '../styles/nprogress.css';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -35,6 +40,10 @@ const lemon = Lemon({
   variable: '--font-lemon',
 });
 
+
+Router.events.on('routeChangeStart', () => NProgress.start())
+Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeError', () => NProgress.done())
 
 export default function App({ Component, pageProps }: AppProps) {
 

@@ -9,9 +9,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <section className=' bg-background200 flex flex-1 justify-center items-center'>
-      <Hero/>
-    </section>
+    <div className='relative h-lvh flex'>
+      <Image src='/bg.jpg' fill={true} alt='bg' className=' hidden lg:flex z-0 fixed opacity-10 overflow-visible'/>
+      <section
+        className='flex flex-1 justify-center items-center mt-16 z-10'>
+        <Hero />
+      </section>
+    </div>
+
 
   )
 }

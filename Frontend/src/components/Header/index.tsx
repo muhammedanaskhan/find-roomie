@@ -63,8 +63,8 @@ const Header: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Box
-        // position="fixed"
-        // top="0"
+        position="fixed"
+        top="0"
         zIndex="10"
         minW="100%"
         px={{ base: 20, lg: 20, md: 20, sm: 0, xs: 0 }}
@@ -124,7 +124,9 @@ const Header: React.FunctionComponent = () => {
               {!user ? (
                 <>
                   <div className="hidden md:flex gap-2">
-                    <Button variant="outline" >Login</Button>
+                    <Link href='/login'>
+                      <Button variant="outline">Login</Button>
+                    </Link>
                     <Link href='/register'>
                       <Button className='bg-primaryBlue text'>Sign Up</Button>
                     </Link>
@@ -152,8 +154,8 @@ const Header: React.FunctionComponent = () => {
                         aria-label="User Account"
                         size="sm"
                         cursor="pointer"
-                        name={user?.displayName ?? "Test"}
-                        src={user?.photoURL}
+                        // name={user?.displayName ?? "Test"}
+                        // src={user?.photoURL}
                       />
                       <MenuList>
                         <MenuItem
