@@ -10,6 +10,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { ChakraProvider } from '@chakra-ui/react'
+import Header from '@/components/Header';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -43,10 +45,14 @@ export default function App({ Component, pageProps }: AppProps) {
     <main
       className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen` }
     >
-      <QueryClientProvider client={queryClient}>
-        <Nav />
+      <ChakraProvider>
+        <QueryClientProvider client={queryClient}>
+        {/* <Nav /> */}
+        <Header/>
         <Component {...pageProps} />
       </QueryClientProvider>
+      </ChakraProvider>
+      
 
     </main>
   );

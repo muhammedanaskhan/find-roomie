@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 
 import { Collapse } from 'flowbite';
@@ -7,8 +7,20 @@ import type { InstanceOptions } from 'flowbite';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import {
+    MDBContainer,
+    MDBCollapse,
+    MDBNavbar,
+    MDBNavbarToggler,
+    MDBIcon,
+    MDBBtn,
+  } from 'mdb-react-ui-kit';
 
 function Nav() {
+
+ const [showAnimated, setShowAnimated] = useState(false);
+  const [showAnimated2, setShowAnimated2] = useState(false);
+  const [showAnimated3, setShowAnimated3] = useState(false);
 
 
     return (
@@ -46,6 +58,11 @@ function Nav() {
                         </Link>
 
                     </div>
+
+
+
+
+
                 </div>
             </nav>
 
