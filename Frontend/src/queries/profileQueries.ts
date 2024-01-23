@@ -8,10 +8,10 @@ import { userType } from '@/types/user'
 import axios from 'axios'
 
 interface UserData {
-  fullName: string;
-  userName: string;
-  email: string;
-  password: string;
+    fullName: string;
+    userName: string;
+    email: string;
+    password: string;
 }
 
 
@@ -21,8 +21,7 @@ interface LoginUserData {
     password: string;
 }
 
-
-
+axios.defaults.withCredentials = true;
 
 export const useRegisterUserMutation = () => {
     const queryClient = useQueryClient();
@@ -36,11 +35,16 @@ export const useRegisterUserMutation = () => {
 }
 
 export const useLoginUserQuery = () => {
-    return useMutation({ 
-        mutationKey: ['login-user'], 
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ['login-user'],
         mutationFn: async (userLoginData: LoginUserData) => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, userLoginData)
             return response.data
+        },
+        onSuccess: (data) => {
+            localStorage.setItem('accessToken', data.data.accessToken);
+            localStorage.setItem('refreshToken', data.data.refreshToken);
         }
     })
 }

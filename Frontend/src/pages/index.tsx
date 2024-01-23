@@ -12,7 +12,7 @@ export default function Home() {
     <div className='relative h-lvh flex'>
       <Image src='/bg.jpg' fill={true} alt='bg' className=' hidden lg:flex z-0 fixed opacity-10 overflow-visible'/>
       <section
-        className='flex flex-1 justify-center items-center mt-16 z-10'>
+        className='flex flex-1 justify-center items-center mt-16'>
         <Hero />
       </section>
     </div>

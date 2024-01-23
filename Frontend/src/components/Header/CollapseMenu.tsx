@@ -42,7 +42,7 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
   // const user ={
   //   displayName: "Test User",
   //   photoURL: "https://bit.ly/dan-abramov",
-    
+
   // };
 
   const user = null;
@@ -71,6 +71,7 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
           m="5"
           p="5"
           borderRadius="md"
+          zIndex={20}
           minH="xs"
           justifyContent="space-between"
           bg={useColorModeValue("white", "gray.700")}
@@ -94,9 +95,10 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
                 index: React.Key | null | undefined
               ) => (
                 <Link
-                key={index}
-                className="text-center text-primaryBlue font-semibold"
+                  key={index}
+                  className="text-center text-primaryBlue font-semibold"
                   href={item.link}
+                  onClick={() => setOpen()}
                 >
                   {item.name}
                 </Link>
@@ -116,11 +118,13 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
             {!user ? (
               <>
                 <div className="flex flex-col gap-2">
-                    <Button variant="outline" >Login</Button>
-                    <Link href='/register'>
-                      <Button className='bg-primaryBlue text w-full'>Sign Up</Button>
-                    </Link>
-                  </div>
+                  <Link href='/login' >
+                    <Button className="w-full" variant="outline" onClick={() => setOpen()}>Login</Button>
+                  </Link>
+                  <Link href='/register'>
+                    <Button className='bg-primaryBlue text w-full' onClick={() => setOpen()}>Sign Up</Button>
+                  </Link>
+                </div>
               </>
             ) : (
               <>
