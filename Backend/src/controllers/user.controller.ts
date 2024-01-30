@@ -3,21 +3,23 @@ import { ApiError } from '../utils/ApiError'
 import { ApiResponse } from '../utils/ApiResponse'
 import { AsyncHandler } from '../utils/AyncHandler'
 import uploadOnCloudinary from '../utils/fileUpload'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
-const generateAccessAndRefreshToken = async (userId: string) =>{
-    try{
-        const user:any = await User.findById(userId)
+const generateAccessAndRefreshToken = async (userId: string) => {
+    try {
+        const user: any = await User.findById(userId)
         const accessToken = user?.generateAccessToken();
         const refreshToken = user?.generateRefreshToken();
 
         user.refreshToken = refreshToken;
-        await user?.save({validateBeforeSave: false})
+        await user?.save({ validateBeforeSave: false })
 
-        return {accessToken, refreshToken}
-    }catch(error: any){
-        throw new ApiError(500,'error while generating Access And Refresh Token', error)
+        return { accessToken, refreshToken }
+    } catch (error: any) {
+        throw new ApiError(500, 'error while generating Access And Refresh Token', error)
     }
 }
+
 const registerUser = AsyncHandler(async (req, res) => {
 
     const { userName, fullName, email, password, gender, contactNumber, preferences }: {
@@ -39,14 +41,14 @@ const registerUser = AsyncHandler(async (req, res) => {
     }
 
     const ifUserExists = await User.findOne({
-        $or: [{userName},{email}]
+        $or: [{ userName }, { email }]
     })
 
-    if(ifUserExists){
+    if (ifUserExists) {
         throw new ApiError(409, 'This user already exists!')
     }
 
-    const avatarLocalPath = (req.files as { avatar?: Express.Multer.File[] })?.avatar?.[0]?.path; 
+    const avatarLocalPath = (req.files as { avatar?: Express.Multer.File[] })?.avatar?.[0]?.path;
 
     // if(!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
 
@@ -80,33 +82,31 @@ const registerUser = AsyncHandler(async (req, res) => {
     )
 })
 
-const loginUser = AsyncHandler( async(req, res) => {
-    
-    const {email, userName, password} : {
+const loginUser = AsyncHandler(async (req, res) => {
+
+    const { email, userName, password }: {
         email: string,
         userName: string,
         password: string
     } = req.body
 
-    console.log(req.body)
-
-    if(!(email || userName)){
+    if (!(email || userName)) {
         throw new ApiError(400, "Enter email/username")
     }
 
     const user = await User.findOne({
-        $or: [{userName}, {email}]
+        $or: [{ userName }, { email }]
     })
 
-    if(!user) throw new ApiError(400, "User does not exists")
+    if (!user) throw new ApiError(400, "User does not exists")
 
     const isPasswordValid = await user.isPasswordCorrect(password)
 
-    if(!isPasswordValid){
-         throw new ApiError(400, "Password Invalid")
+    if (!isPasswordValid) {
+        throw new ApiError(400, "Password Invalid")
     }
 
-    const {accessToken, refreshToken} = await generateAccessAndRefreshToken(user._id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
     const options = {
         httpOnly: true,
@@ -114,20 +114,56 @@ const loginUser = AsyncHandler( async(req, res) => {
     }
 
     return res
-    .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
-    .json(
-        new ApiResponse(
-            200,
-            {"accessToken": accessToken, "refreshToken": refreshToken},   
-            "User Logged In successfully"
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                { "accessToken": accessToken, "refreshToken": refreshToken },
+                "User Logged In successfully"
+            )
         )
+
+})
+
+const sendAccessToken = AsyncHandler(async (req, res) => {
+
+    //verify provided refreshToken
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+        throw new ApiError(403, "No refreshToken found")
+    }
+
+    const user = await User.findOne({ refreshToken })
+
+    if (!user) throw new ApiError(403, "No user found")
+
+    try {
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET as jwt.Secret,
+        ) as JwtPayload
+
+        if(decoded._id !== user._id.toString()) throw new ApiError(405, 'Request forbidden')
+
+    } catch (err) {
+        return res.status(403).json(err)
+    }
+
+    // generate new access token
+
+    const accessToken = user?.generateAccessToken();
+
+    return res.status(201).json(
+        new ApiResponse(200, accessToken, "Access Token Generated SuccesFully")
     )
-    
+
 })
 
 export {
     registerUser,
-    loginUser
+    loginUser,
+    sendAccessToken
 }

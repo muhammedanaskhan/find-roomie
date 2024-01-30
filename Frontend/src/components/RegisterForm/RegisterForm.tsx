@@ -97,10 +97,10 @@ export function RegisterForm() {
             const result = await registerUser(userData)
             console.log("result")
 
-            if(result.statusCode === 200){
+            if (result.statusCode === 200) {
                 notifyRegisterSuccess(result?.data?.fullName)
             }
-            
+
             if (result.data.isUserAuthenticated) {
                 router.push('user-profile')
             } else {
@@ -116,12 +116,13 @@ export function RegisterForm() {
             console.log(`Error registering user ${error}`)
             NProgress.done();
 
-            const axiosError = error as AxiosError;
+            const axiosError = error as AxiosError
             if (axiosError?.response?.status === 409) {
+
                 toast.error('User already exists.');
-              } else {
+            } else {
                 toast.error('An error occurred during registration.');
-              }
+            }
         }
     }
 
@@ -199,7 +200,7 @@ export function RegisterForm() {
                 />
                 <p>Already have an account? <span><Link href='/login'>Login</Link></span></p>
                 <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
-                
+
             </form>
         </Form>
     )
