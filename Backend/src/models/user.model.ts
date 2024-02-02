@@ -2,7 +2,22 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt, {SignOptions} from 'jsonwebtoken'
 
-const UserSchema = new mongoose.Schema(
+interface IUser{
+    userName: string;
+    email: string;
+    password: string;
+    refreshToken: string;
+    fullName: string;
+    avatar: string;
+    gender: string;
+    contactNumber: number;
+    isUserAuthenticated: boolean;
+    preferences: string[];
+    isPasswordCorrect(password: string): Promise<boolean>
+    generateAccessToken(): Promise<string>
+    generateRefreshToken():Promise<string>
+}
+const UserSchema = new mongoose.Schema<IUser>(
     {
         userName: {
             type: String,
@@ -89,12 +104,6 @@ UserSchema.pre("save", async function (next) {
     next()
 })
 
-interface UserDocument extends mongoose.Document {
-    isPasswordCorrect(password: string): Promise<boolean>
-    generateAccessToken(): Promise<string>
-    generateRefreshToken():Promise<string>
-}
-
 UserSchema.methods.isPasswordCorrect = async function (password: string) {
     return await bcrypt.compare(password, this.password)
 }
@@ -123,4 +132,4 @@ UserSchema.methods.generateRefreshToken = function () {
     )
 }
 
-export const User = mongoose.model<UserDocument>("User", UserSchema)
+export const User = mongoose.model<IUser>("User", UserSchema)

@@ -98,15 +98,20 @@ const loginUser = AsyncHandler(async (req, res) => {
         $or: [{ userName }, { email }]
     })
 
+    console.log(user)
+
     if (!user) throw new ApiError(400, "User does not exists")
 
+    const foundUserUserName = user.userName
+    const foundUserEmail = user.email
+    
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if (!isPasswordValid) {
         throw new ApiError(400, "Password Invalid")
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id.toString())
 
     const options = {
         httpOnly: true,
@@ -120,7 +125,12 @@ const loginUser = AsyncHandler(async (req, res) => {
         .json(
             new ApiResponse(
                 200,
-                { "accessToken": accessToken, "refreshToken": refreshToken },
+                { 
+                    "accessToken": accessToken,
+                    "userName": foundUserUserName,
+                    "email": foundUserEmail,
+              
+                },
                 "User Logged In successfully"
             )
         )

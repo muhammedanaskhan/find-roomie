@@ -18,6 +18,9 @@ import Header from '@/components/Header';
 import NProgress from "nprogress";
 import '../styles/nprogress.css';
 
+import { Provider } from 'react-redux';
+import { store } from '@/Redux/store';
+
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
   subsets: ['latin'],
@@ -50,19 +53,19 @@ export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient()
 
   return (
+    <Provider store={store}>
+      <main
+        className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen`}
+      >
+        <ChakraProvider>
+          <QueryClientProvider client={queryClient}>
+            {/* <Nav /> */}
+            <Header />
+            <Component {...pageProps} />
+          </QueryClientProvider>
+        </ChakraProvider>
+      </main>
+    </Provider>
 
-    <main
-      className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen` }
-    >
-      <ChakraProvider>
-        <QueryClientProvider client={queryClient}>
-        {/* <Nav /> */}
-        <Header/>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-      </ChakraProvider>
-      
-
-    </main>
   );
 }

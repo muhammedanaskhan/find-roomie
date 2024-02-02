@@ -43,8 +43,7 @@ export const useLoginUserQuery = () => {
             return response.data
         },
         onSuccess: (data) => {
-            localStorage.setItem('accessToken', data.data.accessToken);
-            localStorage.setItem('refreshToken', data.data.refreshToken);
+            localStorage.setItem('TOKEN', data.data.accessToken);
         }
     })
 }

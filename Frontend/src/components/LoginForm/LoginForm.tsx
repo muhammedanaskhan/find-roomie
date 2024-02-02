@@ -25,6 +25,9 @@ import { AxiosError } from "axios"
 import Cookies from "universal-cookie";
 import useGetAccessToken from "@/hooks/useGetAccessToken"
 
+import { useAppDispatch } from "@/Redux/hooks"
+import { setAuth } from "@/Redux/authSlice"
+
 const formSchema = z.object({
     usernameOrEmail: z.string(),
     password: z.string().min(8, {
@@ -44,6 +47,8 @@ export function LoginForm() {
         resolver: zodResolver(formSchema),
     })
 
+    const dispatch = useAppDispatch()
+
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
@@ -60,7 +65,19 @@ export function LoginForm() {
             NProgress.done();
             toast.success(`You're logged in`)
 
-            console.log(result)
+            const responseUserName = result.data.userName;
+            const responseEmail = result.data.email;
+            const responseAccessToken = result.data.accessToken;
+
+            dispatch(
+                setAuth(
+                    {
+                        userName: responseUserName,
+                        email: responseEmail,
+                        accessToken: responseAccessToken
+                    }
+                )
+            )
 
             cookies.set("TOKEN", result.data.refreshToken, {
                 path: "/",
@@ -117,7 +134,7 @@ export function LoginForm() {
                     <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
                 </form>
             </Form>
-            <button className="btn" onClick={getAccessToken}>generate access token</button>
+            {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
         </>
 
     )
