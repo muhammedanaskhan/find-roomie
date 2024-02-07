@@ -1,9 +1,18 @@
+import ProtectedRoute from '@/components/ProtectedRoute';
+import useIsUserAuthentication from '@/utils/Auth'
+import { redirect } from 'next/navigation';
+
 import React from 'react'
 
-function index() {
+
+const index: React.FunctionComponent = () => {
+
   return (
-    <div>index</div>
+    <ProtectedRoute>
+      <div>index</div>
+    </ProtectedRoute>
+
   )
 }
 
-export default index
+export default index  

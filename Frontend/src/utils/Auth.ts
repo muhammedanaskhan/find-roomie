@@ -1,6 +1,16 @@
-const isUserAuthenticated = () => {
-    const accessToken = localStorage.getItem('accessToken');
-    return accessToken !== null && accessToken!== undefined && accessToken!== '';
+import { useEffect, useState } from "react";
+
+const useIsUserAuthentication = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const accessToken = localStorage.getItem('accessToken');
+            setIsAuthenticated(accessToken !== null && accessToken !== undefined && accessToken !== '');
+        }
+    }, [])
+
+    return isAuthenticated;
 }
 
-export default isUserAuthenticated;
+export default useIsUserAuthentication;

@@ -34,6 +34,7 @@ import useCheckAccessTokenExpiry from "@/hooks/useCheckAccessTokenExpiryAndUpdat
 import isUserAuthenticated from "@/utils/Auth"
 import { redirect } from 'next/navigation';
 import { useLayoutEffect } from 'react';
+import { useRouter } from "next/router"
 
 const formSchema = z.object({
     usernameOrEmail: z.string(),
@@ -56,6 +57,8 @@ export function LoginForm() {
 
     const dispatch = useAppDispatch()
 
+    const router = useRouter()
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             NProgress.start();
@@ -70,6 +73,8 @@ export function LoginForm() {
             }
             NProgress.done();
             toast.success(`You're logged in`)
+
+            router.push('/')
 
             const responseUserName = result.data.userName;
             const responseEmail = result.data.email;
