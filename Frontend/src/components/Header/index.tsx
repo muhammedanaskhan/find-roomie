@@ -1,5 +1,5 @@
 // Basic Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -35,6 +35,7 @@ import { GrUserSettings } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import Image from "next/image";
 
+
 const Header: React.FunctionComponent = () => {
 
   // const user ={
@@ -42,6 +43,17 @@ const Header: React.FunctionComponent = () => {
   //   photoURL: "https://bit.ly/dan-abramov",
 
   // };
+
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      setIsUserAuthenticated(false);
+    } else {
+      setIsUserAuthenticated(true);
+    }
+}, [isUserAuthenticated]);
 
   const user = null;
 
@@ -121,7 +133,7 @@ const Header: React.FunctionComponent = () => {
                 xs: "none",
               }}
             >
-              {!user ? (
+              {!isUserAuthenticated ? (
                 <>
                   <div className="hidden md:flex gap-2">
                     <Link href='/login'>
@@ -134,8 +146,13 @@ const Header: React.FunctionComponent = () => {
                 </>
               ) : (
                 <>
-                  <HStack gap="2">
-                    {/* <Button
+                  <div className="hidden md:flex gap-2">
+                    <Link href='/'>
+                      <Button variant="outline">Logout</Button>
+                    </Link>
+                  </div>
+                  {/* <HStack gap="2">
+                    <Button
                       colorScheme="blue"
                       as={Link}
                       href="/app/dashboard"
@@ -144,18 +161,17 @@ const Header: React.FunctionComponent = () => {
                       size="md"
                       _focus={{ boxShadow: "outline" }}
                     >
-                      {`Continue as ${
-                        user?.displayName.split(" ")[0] ?? "Test User"
-                      }`}
-                    </Button> */}
+                      {`Continue as ${user?.displayName.split(" ")[0] ?? "Test User"
+                        }`}
+                    </Button>
                     <Menu>
                       <MenuButton
                         as={Avatar}
                         aria-label="User Account"
                         size="sm"
                         cursor="pointer"
-                        // name={user?.displayName ?? "Test"}
-                        // src={user?.photoURL}
+                        name={user?.displayName ?? "Test"}
+                        src={user?.photoURL}
                       />
                       <MenuList>
                         <MenuItem
@@ -174,7 +190,7 @@ const Header: React.FunctionComponent = () => {
                         </MenuItem>
                       </MenuList>
                     </Menu>
-                  </HStack>
+                  </HStack> */}
                 </>
               )}
             </Box>
@@ -187,3 +203,5 @@ const Header: React.FunctionComponent = () => {
 };
 
 export default Header;
+
+

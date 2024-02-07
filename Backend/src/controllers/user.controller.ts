@@ -98,10 +98,13 @@ const loginUser = AsyncHandler(async (req, res) => {
         $or: [{ userName }, { email }]
     })
 
+    console.log(user)
+
     if (!user) throw new ApiError(400, "User does not exists")
 
     const foundUserUserName = user.userName
     const foundUserEmail = user.email
+    const isUserAuthenticated = user.isUserAuthenticated
     
     const isPasswordValid = await user.isPasswordCorrect(password)
 
@@ -127,7 +130,7 @@ const loginUser = AsyncHandler(async (req, res) => {
                     "accessToken": accessToken,
                     "userName": foundUserUserName,
                     "email": foundUserEmail,
-              
+                    "isUserAuthenticated": isUserAuthenticated
                 },
                 "User Logged In successfully"
             )

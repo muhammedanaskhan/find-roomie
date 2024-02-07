@@ -28,7 +28,7 @@ import useGetAccessToken from "@/hooks/useGetAccessToken"
 import { useAppDispatch } from "@/Redux/hooks"
 import { setAuth } from "@/Redux/authSlice"
 
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react"
 import useCheckAccessTokenExpiry from "@/hooks/useCheckAccessTokenExpiryAndUpdate"
 import isUserAuthenticated from "@/utils/Auth"
@@ -71,10 +71,21 @@ export function LoginForm() {
                 const userName = values.usernameOrEmail;
                 result = await loginUser({ userName, password: values.password })
             }
+
+            console.log(result)
+
             NProgress.done();
             toast.success(`You're logged in`)
 
-            router.push('/')
+            const responseIsUserAuthenticated = result.data.isUserAuthenticated;
+
+            if (!responseIsUserAuthenticated) {
+                localStorage.setItem('isUserAuthenticated', 'false');
+                router.push('/login/personal-details');
+            } else {
+                router.push('/');
+            }
+
 
             const responseUserName = result.data.userName;
             const responseEmail = result.data.email;
@@ -88,7 +99,7 @@ export function LoginForm() {
 
             localStorage.setItem('accessToken', responseAccessToken);
             localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
-            
+
             dispatch(
                 setAuth(
                     {

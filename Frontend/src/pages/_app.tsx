@@ -20,6 +20,7 @@ import '../styles/nprogress.css';
 
 import { Provider } from 'react-redux';
 import { store } from '@/Redux/store';
+import { useEffect, useState } from 'react';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -52,6 +53,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const queryClient = new QueryClient()
 
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      setIsUserAuthenticated(false);
+    } else {
+      setIsUserAuthenticated(true);
+    }
+}, []);
+
   return (
     <Provider store={store}>
       <main
@@ -60,7 +72,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ChakraProvider>
           <QueryClientProvider client={queryClient}>
             {/* <Nav /> */}
-            <Header />
+            {/* <Header /> */}
             <Component {...pageProps} />
           </QueryClientProvider>
         </ChakraProvider>
