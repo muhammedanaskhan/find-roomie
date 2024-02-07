@@ -28,6 +28,8 @@
     "flowbite": "^2.2.1",
     "framer-motion": "^10.18.0",
     "geist": "^1.2.0",
+    "jose": "^5.2.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.304.0",
     "mdb-react-ui-kit": "^7.1.0",
     "next": "^13.2.4",

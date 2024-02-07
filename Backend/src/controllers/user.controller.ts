@@ -98,8 +98,6 @@ const loginUser = AsyncHandler(async (req, res) => {
         $or: [{ userName }, { email }]
     })
 
-    console.log(user)
-
     if (!user) throw new ApiError(400, "User does not exists")
 
     const foundUserUserName = user.userName

@@ -28,6 +28,13 @@ import useGetAccessToken from "@/hooks/useGetAccessToken"
 import { useAppDispatch } from "@/Redux/hooks"
 import { setAuth } from "@/Redux/authSlice"
 
+import {jwtDecode} from 'jwt-decode';
+import { useEffect, useState } from "react"
+import useCheckAccessTokenExpiry from "@/hooks/useCheckAccessTokenExpiryAndUpdate"
+import isUserAuthenticated from "@/utils/Auth"
+import { redirect } from 'next/navigation';
+import { useLayoutEffect } from 'react';
+
 const formSchema = z.object({
     usernameOrEmail: z.string(),
     password: z.string().min(8, {
@@ -39,16 +46,15 @@ export function LoginForm() {
 
     const { mutateAsync: loginUser } = useLoginUserQuery();
 
-    const cookies = new Cookies();
+    useCheckAccessTokenExpiry();
 
-    const getAccessToken = useGetAccessToken()
+    const cookies = new Cookies();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
 
     const dispatch = useAppDispatch()
-
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
@@ -69,6 +75,15 @@ export function LoginForm() {
             const responseEmail = result.data.email;
             const responseAccessToken = result.data.accessToken;
 
+            const decodedToken = jwtDecode<{ exp: number }>(responseAccessToken);
+            const accessTokenExpiry = decodedToken.exp;
+
+            const accessTokenExpiryTime = new Date(accessTokenExpiry * 1000);
+            console.log(accessTokenExpiryTime)
+
+            localStorage.setItem('accessToken', responseAccessToken);
+            localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
+            
             dispatch(
                 setAuth(
                     {
@@ -78,12 +93,6 @@ export function LoginForm() {
                     }
                 )
             )
-
-            cookies.set("TOKEN", result.data.refreshToken, {
-                path: "/",
-            });
-
-            // console.log(cookies.get("TOKEN"))
 
         } catch (error) {
             NProgress.done();
