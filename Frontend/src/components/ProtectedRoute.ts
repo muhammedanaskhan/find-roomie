@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect } from "react";
-import useIsUserAuthentication from "@/utils/Auth";
 
 interface Props {
     children: ReactNode;
@@ -8,13 +7,13 @@ interface Props {
 
 const ProtectedRoute: React.FC<Props> = ({ children }) => {
     const router = useRouter();
-    const ifUserExists = useIsUserAuthentication();
 
     useEffect(() => {
-        if (!ifUserExists) {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
             router.push('/login');
         }
-    }, [ifUserExists, router]);
+    }, []);
 
     return children as ReactElement;
 };
