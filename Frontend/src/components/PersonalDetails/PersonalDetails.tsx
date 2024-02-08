@@ -2,7 +2,9 @@ import React from 'react'
 
 function PersonalDetails() {
   return (
-    <div>PersonalDetails</div>
+    <div>
+      
+    </div>
   )
 }
 

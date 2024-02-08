@@ -36,6 +36,17 @@ import { redirect } from 'next/navigation';
 import { useLayoutEffect } from 'react';
 import { useRouter } from "next/router"
 
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import Image from "next/image"
+
+
 const formSchema = z.object({
     usernameOrEmail: z.string(),
     password: z.string().min(8, {
@@ -124,42 +135,51 @@ export function LoginForm() {
 
     return (
         <>
-            <Form {...form}>
-                <Toaster />
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-1/4 min-w-64 max-w-lg">
+            <Card className=" p-6 sm:p-10 lg:p-12">
+                <div className='flex justify-center items-center mb-8'>
+                    <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                        {/* <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority /> */}
+                        <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
+                    </Link>
+                </div>
+                <Form {...form}>
+                    <Toaster />
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-1/4 min-w-64 max-w-lg">
 
-                    <FormField
-                        control={form.control}
-                        name="usernameOrEmail"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Username or Email</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="j_doe" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Paasword</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="johndoe67@gmail.com" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="usernameOrEmail"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username or Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="j_doe" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Paasword</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="johndoe67@gmail.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <p>Don&apos;t have an account? <span><Link href='/register'>Register</Link></span></p>
-                    <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
-                </form>
-            </Form>
-            {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
+                        <p>Don&apos;t have an account? <span><Link href='/register'>Register</Link></span></p>
+                        <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
+                    </form>
+                </Form>
+                {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
+            </Card>
+
         </>
 
     )
