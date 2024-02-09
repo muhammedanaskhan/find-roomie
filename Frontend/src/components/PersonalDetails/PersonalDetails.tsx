@@ -53,12 +53,49 @@ function PersonalDetails() {
     setFile(undefined)
   }
 
+  const [selectedPreferences, setSelectedPreferences] = useState<string[] | null>(null)
+
+  const preferences: Array<string> = [
+    'Non Smoker',
+    'Non Alcoholic',
+    'Nomad',
+    'Introvert',
+    'Nerd',
+    'Pet Friendly',
+    'Vegetarian',
+    'Gym Fanatic',
+    'Gamer',
+    'Early Bird',
+    'Night Owl',
+    'Fitness Freak',
+    'Partygoer',
+    'Music Lover',
+    'Minimalist',
+    'Foodie',
+    'Remote Worker',
+    'Tech Geek',
+    'Religious',
+    'Clean Freak'
+  ]
+
+  const handleSelectPreference = (preference: string) => {
+    if(selectedPreferences == null){
+      setSelectedPreferences([preference])
+    }else{
+      if(selectedPreferences.includes(preference)){
+        setSelectedPreferences(selectedPreferences.filter(item => item!== preference))
+      }else{
+        setSelectedPreferences([...selectedPreferences, preference])
+      }
+    }
+  }
+
   return (
     <div className='w-1/2'>
-      <Card className=" p-6 sm:p-10 lg:p-24 ">
+      <Card className=" p-6 sm:p-10 lg:p-20 ">
         <div className='flex flex-col gap-6 '>
           <div className='flex justify-between items-center'>
-            <p>Your Gender</p>
+            <p className='font-semibold'>Your Gender</p>
             <div className='flex gap-4'>
               <Button
                 variant={gender === 'Male' ? 'default' : 'secondary'}
@@ -75,13 +112,13 @@ function PersonalDetails() {
             </div>
           </div>
           <div className='flex justify-between items-center'>
-            <p>City</p>
+            <p className='font-semibold'>City</p>
             <div className=''>
               <Dropdown />
             </div>
           </div>
           <div className='flex justify-between items-center'>
-            <p>Avatar</p>
+            <p className='font-semibold'>Avatar</p>
             <div>
               {file
                 ?
@@ -97,7 +134,25 @@ function PersonalDetails() {
               {isModalOpen && <AvatarCropPopup file={file} closeModal={closeModal} onCroppedImageFile={setCroppedImageFile} />}
             </div>
           </div>
-
+          <div className='flex flex-col justify-between items-center'>
+            <p className='text-left w-full font-semibold'>Select Preferences: </p>
+            <div className='flex w-full flex-wrap gap-2 mt-6 justify-center'>
+              {
+                preferences.map((preference, index) => {
+                  return (
+                    <button
+                      className={`h-8 flex justify-center items-center px-6 border-2 rounded-xl border-slate-200 ${selectedPreferences?.includes(preference) ? 'bg-black text-white' : '' }`}
+                      onClick={() => handleSelectPreference(preference)}>
+                      {preference}
+                    </button>
+                  )
+                })
+              }
+            </div>
+          </div>
+          <Button className='w-1/2 left-0 right-0 m-auto mt-6'>
+            Continue
+          </Button>
         </div>
       </Card>
     </div>
