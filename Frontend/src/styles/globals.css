@@ -83,3 +83,13 @@ img{
   height: min-content;
 }
 
+.guZdik{
+  min-width: 208px !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: dashed 1px rgb(226, 232, 240) !important;
+}
+.guZdik svg path{
+  fill: rgb(226, 232, 240) !important;
+}
+
