@@ -24,7 +24,7 @@ interface LoginUserData {
 interface authenticateUserData {
     gender: string;
     city: string;
-    avatar: File;
+    avatar: File | null;
     preferences: string[];
 }
 
@@ -63,9 +63,11 @@ export const useAuthenticateUserQuery = () => {
             const formData = new FormData();
             formData.append('gender', userData.gender);
             formData.append('city', userData.city);
-            formData.append('avatar', userData.avatar);
+            if (userData.avatar !== null) {
+                formData.append('avatar', userData.avatar);
+            }
             formData.append('preferences', JSON.stringify(userData.preferences));
-            
+
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/authenticate`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

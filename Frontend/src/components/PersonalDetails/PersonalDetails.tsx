@@ -16,7 +16,10 @@ import { FileUploader } from 'react-drag-drop-files'
 import styles from "./AvatarCropPopup.module.css";
 import AvatarCropPopup from './AvatarCropPopup'
 import Image from 'next/image'
+
 import toast, { Toaster } from 'react-hot-toast'
+import NProgress from "nprogress";
+
 import { useAuthenticateUserQuery } from '@/queries/profileQueries'
 
 function PersonalDetails() {
@@ -47,7 +50,6 @@ function PersonalDetails() {
 
   const handleChange = (file: File) => {
     setFile(file);
-    console.log("file", file)
     setIsModalOpen(true)
   };
 
@@ -123,15 +125,27 @@ function PersonalDetails() {
     }
     else {
 
-      const result = await authenticateUser(
-        {
-          gender: gender,
-          city: city,
-          avatar: file,
-          preferences: selectedPreferences
-        }
-      )
-      console.log(result)
+      try {
+
+        NProgress.start();
+
+        const result = await authenticateUser(
+          {
+            gender: gender,
+            city: city,
+            avatar: croppedImageFile,
+            preferences: selectedPreferences
+          }
+        )
+
+        NProgress.done();
+        toast.success(`Your details are saved!`)
+        console.log(result)
+      } catch (error) {
+
+      }
+
+
     }
   }
 
