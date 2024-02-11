@@ -24,6 +24,10 @@ import NProgress from "nprogress";
 
 import toast, { Toaster } from 'react-hot-toast';
 import { AxiosError } from "axios"
+import { jwtDecode } from "jwt-decode"
+
+import { useAppDispatch } from "@/Redux/hooks"
+import { setAuth } from "@/Redux/authSlice"
 
 const formSchema = z.object({
     firstName: z.string(),
@@ -40,6 +44,9 @@ const formSchema = z.object({
 })
 
 export function RegisterForm() {
+
+    const dispatch = useAppDispatch()
+
 
     const router = useRouter();
 
@@ -95,21 +102,46 @@ export function RegisterForm() {
         try {
             NProgress.start();
             const result = await registerUser(userData)
-            console.log("result")
+            console.log(result)
 
-            if (result.statusCode === 200) {
-                notifyRegisterSuccess(result?.data?.fullName)
-            }
-
-            if (result.data.isUserAuthenticated) {
-                router.push('user-profile')
-            } else {
-
+            if (!result.data.isUserAuthenticated) {
                 const logindata: LoginUserData = {
                     email: result.data.email,
                     password: userData.password
                 }
-                loginUser(logindata)
+
+                const loginResult = await loginUser(logindata)
+
+                const responseIsUserAuthenticated = loginResult.data.isUserAuthenticated;
+                const responseUserName = loginResult.data.userName;
+                const responseEmail = loginResult.data.email;
+                const responseAccessToken = loginResult.data.accessToken;
+
+                const decodedToken = jwtDecode<{ exp: number }>(responseAccessToken);
+                const accessTokenExpiry = decodedToken.exp;
+
+                const accessTokenExpiryTime = new Date(accessTokenExpiry * 1000);
+
+
+                localStorage.setItem('accessToken', responseAccessToken);
+                localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
+                localStorage.setItem('isUserAuthenticated', 'false');
+                dispatch(
+                    setAuth(
+                        {
+                            userName: responseUserName,
+                            email: responseEmail,
+                            accessToken: responseAccessToken
+                        }
+                    )
+                )
+
+                notifyRegisterSuccess(result?.data?.fullName)
+
+
+                router.push('/login/personal-details')
+            } else {
+                router.push('/')
             }
             NProgress.done();
         } catch (error) {
