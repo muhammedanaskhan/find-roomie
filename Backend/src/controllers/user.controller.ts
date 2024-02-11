@@ -173,8 +173,27 @@ const sendAccessToken = AsyncHandler(async (req, res) => {
 
 })
 
+const authenticateUser = AsyncHandler(async (req, res) => {
+
+    console.log("req.files", req.files)
+
+    const avatarLocalPath = (req.files as { avatar?: Express.Multer.File[] })?.avatar?.[0]?.path;
+
+    console.log("avatarLocalPath", avatarLocalPath)
+    // if(!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
+
+    //upload Avatar to cloudinary
+
+    // const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+    // if(!avatar){
+    //     throw new ApiError(400, 'Avatar not uploaded')
+    // }
+})
+
 export {
     registerUser,
     loginUser,
-    sendAccessToken
+    sendAccessToken,
+    authenticateUser
 }

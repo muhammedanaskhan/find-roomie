@@ -21,6 +21,13 @@ interface LoginUserData {
     password: string;
 }
 
+interface authenticateUserData {
+    gender: string;
+    city: string;
+    avatar: File;
+    preferences: string[];
+}
+
 axios.defaults.withCredentials = true;
 
 export const useRegisterUserMutation = () => {
@@ -45,5 +52,29 @@ export const useLoginUserQuery = () => {
         onSuccess: (data) => {
             localStorage.setItem('TOKEN', data.data.accessToken);
         }
+    })
+}
+
+export const useAuthenticateUserQuery = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ['authenticate-user'],
+        mutationFn: async (userData: authenticateUserData) => {
+            const formData = new FormData();
+            formData.append('gender', userData.gender);
+            formData.append('city', userData.city);
+            formData.append('avatar', userData.avatar);
+            formData.append('preferences', JSON.stringify(userData.preferences));
+            
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/authenticate`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data
+        },
+        // onSuccess: (data) => {
+        //     localStorage.setItem('TOKEN', data.data.accessToken);
+        // }
     })
 }

@@ -20,32 +20,34 @@ import {
 
 const frameworks = [
   {
-    value: "Heydrabad",
+    value: "heydrabad",
     label: "Heydrabad",
   },
-
-  
   {
-    value: "Bangalore",
+    value: "bangalore",
     label: "Bangalore",
   },
   {
-    value: "Mumbai",
+    value: "mumbai",
     label: "Mumbai",
   },
   {
-    value: "Chennai",
+    value: "chennai",
     label: "Chennai",
   },
   {
-    value: "Pune",
+    value: "pune",
     label: "Pune",
   },
 ]
 
-export function Dropdown() {
+interface Props{
+  onSelectValue: (value: string) => void
+}
+export function Dropdown({onSelectValue}: Props) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,6 +76,7 @@ export function Dropdown() {
                 onSelect={(currentValue: string) => {
                   setValue(currentValue === value ? "" : currentValue)
                   setOpen(false)
+                  onSelectValue(currentValue)
                 }}
               >
                 {framework.label}

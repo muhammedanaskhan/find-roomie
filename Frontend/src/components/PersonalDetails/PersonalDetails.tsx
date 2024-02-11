@@ -16,24 +16,39 @@ import { FileUploader } from 'react-drag-drop-files'
 import styles from "./AvatarCropPopup.module.css";
 import AvatarCropPopup from './AvatarCropPopup'
 import Image from 'next/image'
+import toast, { Toaster } from 'react-hot-toast'
+import { useAuthenticateUserQuery } from '@/queries/profileQueries'
 
 function PersonalDetails() {
 
-  const [gender, setGender] = useState<string | null>(null)
-  const handleSelectGender = (gender: string) => {
+  type Gender = 'Male' | 'Female' | null
+
+  const [gender, setGender] = useState<Gender | null>(null)
+
+  const handleSelectGender = (gender: Gender) => {
     setGender(gender)
+  }
+
+
+
+  const [city, setCity] = useState<string | null>(null)
+
+  const handleSelectCity = (value: string) => {
+    setCity(value)
   }
 
   const fileTypes = ["JPG", "PNG"];
 
   const [file, setFile] = useState<File>();
+
+
   const [croppedImageFile, setCroppedImageFile] = useState<File | null>(null);
 
 
   const handleChange = (file: File) => {
     setFile(file);
+    console.log("file", file)
     setIsModalOpen(true)
-    console.log(file);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -46,7 +61,6 @@ function PersonalDetails() {
     setIsModalOpen(true)
   }
 
-  console.log("file", croppedImageFile);
 
   const resetCroppedImage = () => {
     setCroppedImageFile(null)
@@ -79,19 +93,51 @@ function PersonalDetails() {
   ]
 
   const handleSelectPreference = (preference: string) => {
-    if(selectedPreferences == null){
+    if (selectedPreferences == null) {
       setSelectedPreferences([preference])
-    }else{
-      if(selectedPreferences.includes(preference)){
-        setSelectedPreferences(selectedPreferences.filter(item => item!== preference))
-      }else{
+    } else {
+      if (selectedPreferences.includes(preference)) {
+        setSelectedPreferences(selectedPreferences.filter(item => item !== preference))
+      } else {
         setSelectedPreferences([...selectedPreferences, preference])
       }
     }
   }
 
+
+  const { mutateAsync: authenticateUser } = useAuthenticateUserQuery();
+
+  const handleSubmit = async () => {
+
+
+    if (gender == null) {
+      toast.error('Select your gender')
+    } else if (city == null) {
+      toast.error('Select your city')
+    } else if (file == null) {
+      toast.error('Upload your profile picture')
+    } else if (!selectedPreferences || selectedPreferences.length === 0) {
+      toast.error('Select your preferences')
+    } else if (selectedPreferences?.length < 5) {
+      toast.error('Select At least 5 preferences')
+    }
+    else {
+
+      const result = await authenticateUser(
+        {
+          gender: gender,
+          city: city,
+          avatar: file,
+          preferences: selectedPreferences
+        }
+      )
+      console.log(result)
+    }
+  }
+
   return (
     <div className='w-1/2'>
+      <Toaster />
       <Card className=" p-6 sm:p-10 lg:p-20 ">
         <div className='flex flex-col gap-6 '>
           <div className='flex justify-between items-center'>
@@ -99,13 +145,13 @@ function PersonalDetails() {
             <div className='flex gap-4'>
               <Button
                 variant={gender === 'Male' ? 'default' : 'secondary'}
-                className='w-24 '
+                className={`w-24 ${gender === 'Male' ? 'bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Male')}>
                 Male
               </Button>
               <Button
                 variant={gender === 'Female' ? 'default' : 'secondary'}
-                className='w-24'
+                className={`w-24 ${gender === 'Female' ? 'bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Female')}>
                 Female
               </Button>
@@ -114,7 +160,7 @@ function PersonalDetails() {
           <div className='flex justify-between items-center'>
             <p className='font-semibold'>City</p>
             <div className=''>
-              <Dropdown />
+              <Dropdown onSelectValue={handleSelectCity} />
             </div>
           </div>
           <div className='flex justify-between items-center'>
@@ -141,7 +187,7 @@ function PersonalDetails() {
                 preferences.map((preference, index) => {
                   return (
                     <button
-                      className={`h-8 flex justify-center items-center px-6 border-2 rounded-xl border-slate-200 ${selectedPreferences?.includes(preference) ? 'bg-black text-white' : '' }`}
+                      className={`h-8 flex hover:transform hover:scale-105 transition-transform duration-100 ease-in-out justify-center items-center px-6 border-2 rounded-xl border-slate-200 ${selectedPreferences?.includes(preference) ? 'bg-primaryBlue text-white border-primaryBlue' : ''}`}
                       onClick={() => handleSelectPreference(preference)}>
                       {preference}
                     </button>
@@ -150,7 +196,8 @@ function PersonalDetails() {
               }
             </div>
           </div>
-          <Button className='w-1/2 left-0 right-0 m-auto mt-6'>
+          <Button className='w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue'
+            onClick={handleSubmit}>
             Continue
           </Button>
         </div>
@@ -160,35 +207,3 @@ function PersonalDetails() {
 }
 
 export default PersonalDetails
-
-
-
-
-{/* <div>
-<input type="file" accept=".jpg, .png, .jpeg" className='hidden'></input>
-  <div>
-    <button className="mt-2 md:mt-0 border border-gray-200 rounded-md w-full h-24 flex flex-col justify-center items-center text-xs text-gray-500">
-      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" className="w-8 h-8 text-gray-400 mb-2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 5h13v7h2V5c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h8v-2H4V5z"></path>
-        <path d="m8 11-3 4h11l-4-6-3 4z"></path>
-        <path d="M19 14h-2v3h-3v2h3v3h2v-3h3v-2h-3z"></path>
-      </svg>
-      Click or Drop to upload profile image (jpg or png)
-    </button>
-  </div>
-  <div className="my-3 md:my-5 text-center text-gray-500 text-sm">-- OR --</div>
-  <div className="grid grid-cols-4">
-    <div className="relative w-16 h-16">
-      <img src="https://www.flatmate.in/api/ranbasera/app/images/avatar/male-3.jpg" alt="avatar" className="w-16 h-16 rounded-full bg-gray-200 cursor-pointer transform false"/>
-    </div>
-    <div className="relative w-16 h-16">
-      <img src="https://www.flatmate.in/api/ranbasera/app/images/avatar/male-27.jpg" alt="avatar" className="w-16 h-16 rounded-full bg-gray-200 cursor-pointer transform false"/>
-    </div>
-    <div className="relative w-16 h-16">
-      <img src="https://www.flatmate.in/api/ranbasera/app/images/avatar/male-24.jpg" alt="avatar" className="w-16 h-16 rounded-full bg-gray-200 cursor-pointer transform false"/>
-    </div>
-    <div className="relative w-16 h-16">
-      <img src="https://www.flatmate.in/api/ranbasera/app/images/avatar/male-19.jpg" alt="avatar" className="w-16 h-16 rounded-full bg-gray-200 cursor-pointer transform false"/>
-    </div>
-  </div>
-</div> */}

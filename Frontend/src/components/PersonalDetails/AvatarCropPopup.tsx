@@ -47,7 +47,6 @@ function AvatarCropPopup({ file, closeModal, onCroppedImageFile }: Props) {
                 croppedAreaPixels,
                 0
             );
-            console.log("donee", { croppedImage });
             setCroppedImage(croppedImage);
 
             if (croppedImage) {
