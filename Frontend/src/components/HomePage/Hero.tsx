@@ -40,7 +40,7 @@ function Hero() {
         <div className='flex flex-col gap-4'>
           <div className="flex flex-col md:flex-row w-full gap-4  items-center space-x-2 relative">
             <Input type="text" placeholder="Search Places..."></Input>
-            <Button className='w-full md:w-10 px-12 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow' type="submit">Search</Button>
+            <Button className='w-full md:w-10 px-12 hover:bg-primaryBlue hover:scale-105 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow' type="submit">Search</Button>
          
          
           </div>

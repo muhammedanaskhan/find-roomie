@@ -137,10 +137,10 @@ const Header: React.FunctionComponent = () => {
                 <>
                   <div className="hidden md:flex gap-2">
                     <Link href='/login'>
-                      <Button variant="outline">Login</Button>
+                      <Button variant="outline" className="hover:">Login</Button>
                     </Link>
                     <Link href='/register'>
-                      <Button className='bg-primaryBlue text'>Sign Up</Button>
+                      <Button className='hover:bg-primaryBlue bg-primaryBlue text'>Sign Up</Button>
                     </Link>
                   </div>
                 </>

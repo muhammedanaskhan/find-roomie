@@ -22,6 +22,7 @@ import NProgress from "nprogress";
 
 import { useAuthenticateUserQuery } from '@/queries/profileQueries'
 import { Router, useRouter } from 'next/router'
+import Link from 'next/link'
 
 
 
@@ -143,7 +144,7 @@ function PersonalDetails() {
 
         NProgress.done();
         toast.success(`Your details are saved!`)
-        if(result.statusCode === 200) {
+        if (result.statusCode === 200) {
           localStorage.setItem('isUserAuthenticated', "true")
           router.push('/')
         }
@@ -156,20 +157,26 @@ function PersonalDetails() {
   return (
     <div className='w-1/2'>
       <Toaster />
-      <Card className=" p-6 sm:p-10 lg:p-20 ">
+      <Card className=" p-6 sm:p-10 lg:p-12 ">
+        <div className='flex justify-center items-center mb-8'>
+          <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+            {/* <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority /> */}
+            <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
+          </Link>
+        </div>
         <div className='flex flex-col gap-6 '>
           <div className='flex justify-between items-center'>
             <p className='font-semibold'>Your Gender</p>
             <div className='flex gap-4'>
               <Button
                 variant={gender === 'Male' ? 'default' : 'secondary'}
-                className={`w-24 ${gender === 'Male' ? 'bg-primaryBlue' : ''}`}
+                className={`w-24 ${gender === 'Male' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Male')}>
                 Male
               </Button>
               <Button
                 variant={gender === 'Female' ? 'default' : 'secondary'}
-                className={`w-24 ${gender === 'Female' ? 'bg-primaryBlue' : ''}`}
+                className={`w-24 ${gender === 'Female' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Female')}>
                 Female
               </Button>
@@ -214,7 +221,7 @@ function PersonalDetails() {
               }
             </div>
           </div>
-          <Button className='w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue'
+          <Button className='w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue hover:bg-primaryBlue'
             onClick={handleSubmit}>
             Continue
           </Button>

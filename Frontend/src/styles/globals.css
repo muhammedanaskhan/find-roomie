@@ -66,6 +66,9 @@
   }
 }
  
+body{
+  height: 100vh !important;
+}
 @layer base {
   * {
     @apply border-border;

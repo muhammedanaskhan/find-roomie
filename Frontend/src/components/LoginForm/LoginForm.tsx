@@ -174,7 +174,7 @@ export function LoginForm() {
                         />
 
                         <p>Don&apos;t have an account? <span><Link href='/register'>Register</Link></span></p>
-                        <Button type="submit" className="w-full bg-primaryBlue">Submit</Button>
+                        <Button type="submit" className="w-full  hover:bg-primaryBlue bg-primaryBlue">Submit</Button>
                     </form>
                 </Form>
                 {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
