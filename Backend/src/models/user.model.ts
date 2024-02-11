@@ -12,6 +12,7 @@ interface IUser{
     gender: string;
     contactNumber: number;
     isUserAuthenticated: boolean;
+    city: string;
     preferences: string[];
     isPasswordCorrect(password: string): Promise<boolean>
     generateAccessToken(): Promise<string>
@@ -61,32 +62,35 @@ const UserSchema = new mongoose.Schema<IUser>(
             type: Boolean,
             default: false
         },
+        city:{
+            type: String,
+        },
         preferences: {
             type: [
                 {
                     type: String,
-                    // enum: [
-                    //     'Non Smoker',
-                    //     'Non Alcoholic',
-                    //     'Nomad',
-                    //     'Introvert',
-                    //     'Nerd',
-                    //     'Pet Friendly',
-                    //     'Vegetarian',
-                    //     'Gym Fanatic',
-                    //     'Gamer',
-                    //     'Early Bird',
-                    //     'Night Owl',
-                    //     'Fitness Freak',
-                    //     'Partygoer',
-                    //     'Music Lover',
-                    //     'Minimalist',
-                    //     'Foodie',
-                    //     'Remote Worker',
-                    //     'Tech Geek',
-                    //     'Religious',
-                    //     'Clean Freak'
-                    // ]
+                    enum: [
+                        'Non Smoker',
+                        'Non Alcoholic',
+                        'Nomad',
+                        'Introvert',
+                        'Nerd',
+                        'Pet Friendly',
+                        'Vegetarian',
+                        'Gym Fanatic',
+                        'Gamer',
+                        'Early Bird',
+                        'Night Owl',
+                        'Fitness Freak',
+                        'Partygoer',
+                        'Music Lover',
+                        'Minimalist',
+                        'Foodie',
+                        'Remote Worker',
+                        'Tech Geek',
+                        'Religious',
+                        'Clean Freak'
+                    ]
                 }
             ],
 

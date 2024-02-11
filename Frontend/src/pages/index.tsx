@@ -8,7 +8,11 @@ import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] })
 
+import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
+
+
 export default function Home() {
+
   return (
     <div>
       <Header />
@@ -20,8 +24,6 @@ export default function Home() {
         </section>
       </div>
     </div>
-
-
 
   )
 }

@@ -3,7 +3,7 @@ import { ApiError } from '../utils/ApiError'
 import { ApiResponse } from '../utils/ApiResponse'
 import { AsyncHandler } from '../utils/AyncHandler'
 import uploadOnCloudinary from '../utils/fileUpload'
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import jwt, { JwtPayload, verify } from 'jsonwebtoken'
 
 const generateAccessAndRefreshToken = async (userId: string) => {
     try {
@@ -105,7 +105,7 @@ const loginUser = AsyncHandler(async (req, res) => {
     const foundUserUserName = user.userName
     const foundUserEmail = user.email
     const isUserAuthenticated = user.isUserAuthenticated
-    
+
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if (!isPasswordValid) {
@@ -126,7 +126,7 @@ const loginUser = AsyncHandler(async (req, res) => {
         .json(
             new ApiResponse(
                 200,
-                { 
+                {
                     "accessToken": accessToken,
                     "userName": foundUserUserName,
                     "email": foundUserEmail,
@@ -157,7 +157,7 @@ const sendAccessToken = AsyncHandler(async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET as jwt.Secret,
         ) as JwtPayload
 
-        if(decoded._id !== user._id.toString()) throw new ApiError(405, 'Request forbidden')
+        if (decoded._id !== user._id.toString()) throw new ApiError(405, 'Request forbidden')
 
     } catch (err) {
         return res.status(403).json(err)
@@ -174,21 +174,58 @@ const sendAccessToken = AsyncHandler(async (req, res) => {
 })
 
 const authenticateUser = AsyncHandler(async (req, res) => {
+    const authHeader = req.headers['authorization'];
+
+    let decoded: JwtPayload | undefined;
+
+    if (authHeader) {
+        const accessToken = authHeader.split(' ')[1];
+
+        // Verify the token
+        const secret = process.env.ACCESS_TOKEN_SECRET as jwt.Secret;
+        decoded = verify(accessToken, secret) as JwtPayload;
+    }
+
+    // Check if no token was provided
+    if (!decoded) {
+        throw new ApiError(403, "No token provided");
+    }
 
     const avatarLocalPath = (req.files as { avatar?: Express.Multer.File[] })?.avatar?.[0]?.path;
 
-    return res.status(201).json(
-        new ApiResponse(200 , "User authenticated successfully")
-    )
-    // if(!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
+    if (!avatarLocalPath) throw new ApiError(409, 'Avatar Required')
 
     //upload Avatar to cloudinary
 
-    // const avatar = await uploadOnCloudinary(avatarLocalPath)
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
 
-    // if(!avatar){
-    //     throw new ApiError(400, 'Avatar not uploaded')
-    // }
+
+    if (!avatar) {
+        throw new ApiError(400, 'Avatar not uploaded')
+    }
+
+    const gender = req.body.gender;
+    const city = req.body.city;
+    const preferencesArray = JSON.parse(req.body.preferences);
+
+    const user = await User.findById(decoded._id)
+
+    if (!user) throw new ApiError(404, "User not found")
+
+    user.avatar = avatar.secure_url;
+    user.gender = gender;
+    user.city = city;
+    user.preferences = preferencesArray;
+    user.isUserAuthenticated = true;
+
+    await user.save();
+
+    return res.status(201).json(
+        new ApiResponse(200, "User authenticated successfully")
+    )
+
+
+
 })
 
 export {

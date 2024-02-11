@@ -6,8 +6,10 @@ import { jwtDecode } from 'jwt-decode';
 // take current acces token expiry from localStorage
 
 const useCheckAccessTokenExpiryAndUpdate = () => {
+    console.log('Checking access token expiry 1 ...');
     useEffect(() => {
 
+        console.log('Checking access token expiry...');
         const refreshAccessToken = async () => {
             try {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/refresh`, { withCredentials: true });

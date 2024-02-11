@@ -57,6 +57,8 @@ export const useLoginUserQuery = () => {
 
 export const useAuthenticateUserQuery = () => {
     const queryClient = useQueryClient();
+    const accessToken = localStorage.getItem('accessToken');
+
     return useMutation({
         mutationKey: ['authenticate-user'],
         mutationFn: async (userData: authenticateUserData) => {
@@ -70,6 +72,7 @@ export const useAuthenticateUserQuery = () => {
 
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/authenticate`, formData, {
                 headers: {
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

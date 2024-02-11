@@ -21,6 +21,7 @@ import '../styles/nprogress.css';
 import { Provider } from 'react-redux';
 import { store } from '@/Redux/store';
 import { useEffect, useState } from 'react';
+import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -62,7 +63,11 @@ export default function App({ Component, pageProps }: AppProps) {
     } else {
       setIsUserAuthenticated(true);
     }
-}, []);
+  }, []);
+
+
+  useCheckAccessTokenExpiryAndUpdate();
+
 
   return (
     <Provider store={store}>

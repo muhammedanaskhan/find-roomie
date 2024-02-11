@@ -21,8 +21,13 @@ import toast, { Toaster } from 'react-hot-toast'
 import NProgress from "nprogress";
 
 import { useAuthenticateUserQuery } from '@/queries/profileQueries'
+import { Router, useRouter } from 'next/router'
+
+
 
 function PersonalDetails() {
+
+  const router = useRouter();
 
   type Gender = 'Male' | 'Female' | null
 
@@ -31,8 +36,6 @@ function PersonalDetails() {
   const handleSelectGender = (gender: Gender) => {
     setGender(gender)
   }
-
-
 
   const [city, setCity] = useState<string | null>(null)
 
@@ -140,12 +143,13 @@ function PersonalDetails() {
 
         NProgress.done();
         toast.success(`Your details are saved!`)
-        console.log(result)
+        if(result.statusCode === 200) {
+          localStorage.setItem('isUserAuthenticated', "true")
+          router.push('/')
+        }
       } catch (error) {
 
       }
-
-
     }
   }
 
