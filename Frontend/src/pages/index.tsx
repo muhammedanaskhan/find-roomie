@@ -10,8 +10,11 @@ const inter = Inter({ subsets: ['latin'] })
 
 import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
 
+import { useGetUserDataQuery } from '@/queries/profileQueries';
+import axios from 'axios';
 
-export default function Home() {
+
+export default function Home({ userData }: any) {
 
   return (
     <div>
@@ -27,3 +30,4 @@ export default function Home() {
 
   )
 }
+

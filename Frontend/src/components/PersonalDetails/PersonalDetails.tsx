@@ -155,7 +155,7 @@ function PersonalDetails() {
   }
 
   return (
-    <div className='w-1/2'>
+    <div className='w-3/4 lg:w-1/2'>
       <Toaster />
       <Card className=" p-6 sm:p-10 lg:p-12 ">
         <div className='flex justify-center items-center mb-8'>
@@ -165,32 +165,32 @@ function PersonalDetails() {
           </Link>
         </div>
         <div className='flex flex-col gap-6 '>
-          <div className='flex justify-between items-center'>
-            <p className='font-semibold'>Your Gender</p>
-            <div className='flex gap-4'>
+          <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
+            <p className=' text-left w-full font-semibold'>Your Gender</p>
+            <div className='w-full flex gap-4 lg:w-52'>
               <Button
                 variant={gender === 'Male' ? 'default' : 'secondary'}
-                className={`w-24 ${gender === 'Male' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
+                className={`w-full lg:w-24 ${gender === 'Male' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Male')}>
                 Male
               </Button>
               <Button
                 variant={gender === 'Female' ? 'default' : 'secondary'}
-                className={`w-24 ${gender === 'Female' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
+                className={`w-full lg:w-24 ${gender === 'Female' ? 'bg-primaryBlue hover:bg-primaryBlue' : ''}`}
                 onClick={() => handleSelectGender('Female')}>
                 Female
               </Button>
             </div>
           </div>
-          <div className='flex justify-between items-center'>
-            <p className='font-semibold'>City</p>
-            <div className=''>
+          <div className='flex flex-col gap-4 lg:flex-row justify-between items-center'>
+            <p className='text-left w-full lg:w-min font-semibold'>City</p>
+            <div className='w-full flex gap-4 lg:w-52'>
               <Dropdown onSelectValue={handleSelectCity} />
             </div>
           </div>
-          <div className='flex justify-between items-center'>
-            <p className='font-semibold'>Avatar</p>
-            <div>
+          <div className='flex gap-4 flex-col lg:flex-row justify-between items-center'>
+            <p className='text-left w-full lg:w-min font-semibold'>Avatar</p>
+            <div className='w-full lg:w-52'>
               {file
                 ?
                 <div className='min-w-52'>
@@ -201,7 +201,10 @@ function PersonalDetails() {
 
                 </div>
                 :
-                <FileUploader className={styles.labell} label='Upload or Drop' handleChange={handleChange} name="file" types={fileTypes} />}
+                <div className='w-full'>
+                  <FileUploader className={styles.labell} label='Upload or Drop' handleChange={handleChange} name="file" types={fileTypes} />
+                </div>
+              }
               {isModalOpen && <AvatarCropPopup file={file} closeModal={closeModal} onCroppedImageFile={setCroppedImageFile} />}
             </div>
           </div>
@@ -221,7 +224,7 @@ function PersonalDetails() {
               }
             </div>
           </div>
-          <Button className='w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue hover:bg-primaryBlue'
+          <Button className='w-full sm:w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue hover:bg-primaryBlue'
             onClick={handleSubmit}>
             Continue
           </Button>

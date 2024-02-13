@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {upload} from '../middleware/multer.middleware'
-import { registerUser, loginUser, sendAccessToken, authenticateUser } from "../controllers/user.controller";
+import { upload } from '../middleware/multer.middleware'
+import { registerUser, loginUser, sendAccessToken, authenticateUser, getUserData } from "../controllers/user.controller";
 
 const router = Router();
 
@@ -22,6 +22,8 @@ router.route('/authenticate').post(
             name: "avatar",
             maxCount: 1
         }
-    ]),authenticateUser)
+    ]), authenticateUser)
+
+router.route('/get-user-data').get(getUserData)
 
 export default router

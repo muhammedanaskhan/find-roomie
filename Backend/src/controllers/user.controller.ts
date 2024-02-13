@@ -228,9 +228,39 @@ const authenticateUser = AsyncHandler(async (req, res) => {
 
 })
 
+const getUserData = AsyncHandler(async (req, res) => {
+    console.log("req")
+    const authHeader = req.headers['authorization'];
+
+    let decoded: JwtPayload | undefined;
+
+    if (authHeader) {
+        const accessToken = authHeader.split(' ')[1];
+
+        const secret = process.env.ACCESS_TOKEN_SECRET as jwt.Secret;
+        decoded = verify(accessToken, secret) as JwtPayload;
+    }
+
+    if (!decoded) {
+        throw new ApiError(403, "No token provided");
+    }
+
+    const user = await User.findById(decoded._id)
+
+    console.log(user)
+
+    if (!user) throw new ApiError(404, "User not found")
+
+    return res.status(200).json(
+        new ApiResponse(200, user, "User data retrieved successfully")
+    )
+
+})
+
 export {
     registerUser,
     loginUser,
     sendAccessToken,
-    authenticateUser
+    authenticateUser,
+    getUserData
 }

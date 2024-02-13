@@ -56,7 +56,7 @@ export function Dropdown({onSelectValue}: Props) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[208px] justify-between"
+          className="w-full justify-between"
         >
           {value
             ? frameworks.find((framework) => framework.value === value)?.label

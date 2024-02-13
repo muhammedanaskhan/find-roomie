@@ -34,6 +34,11 @@ import { FiMenu } from "react-icons/fi";
 import { GrUserSettings } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import Image from "next/image";
+import { Profile } from "./Profile";
+import axios from "axios";
+import { useGetUserDataQuery } from "@/queries/profileQueries";
+import { get } from "http";
+import { set } from "nprogress";
 
 
 const Header: React.FunctionComponent = () => {
@@ -45,6 +50,12 @@ const Header: React.FunctionComponent = () => {
   // };
 
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  const [avatar, setAvatar] = useState('');
+  const [username, setUsername] = useState('');
+
+  const { mutateAsync: getUser } = useGetUserDataQuery();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -52,8 +63,19 @@ const Header: React.FunctionComponent = () => {
       setIsUserAuthenticated(false);
     } else {
       setIsUserAuthenticated(true);
+
+      const fetchGetUser = async () => {
+        const result = await getUser();
+
+        setAvatar(result.data.avatar);
+        setUsername(result.data.fullName);
+      }
+      fetchGetUser()
     }
-}, [isUserAuthenticated]);
+  }, []);
+
+  console.log("userData", userData);
+
 
   const user = null;
 
@@ -147,9 +169,7 @@ const Header: React.FunctionComponent = () => {
               ) : (
                 <>
                   <div className="hidden md:flex gap-2">
-                    <Link href='/'>
-                      <Button variant="outline">Logout</Button>
-                    </Link>
+                    <Profile avatar={avatar} userName={username}/>
                   </div>
                   {/* <HStack gap="2">
                     <Button

@@ -83,3 +83,19 @@ export const useAuthenticateUserQuery = () => {
         // }
     })
 }
+
+export const useGetUserDataQuery = () => {
+    console.log('useGetUserDataQuery')
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ['get-user-data'],
+        mutationFn: async () => {
+            const response = await axios.get    (`${process.env.NEXT_PUBLIC_BASE_URL}/users/get-user-data`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            return response.data
+        }
+    })
+}

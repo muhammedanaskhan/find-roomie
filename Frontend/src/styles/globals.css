@@ -87,8 +87,9 @@ img{
 }
 
 .guZdik{
-  min-width: 208px !important;
-  width: 40px !important;
+  min-width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
   height: 40px !important;
   border: dashed 1px rgb(226, 232, 240) !important;
 }

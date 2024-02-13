@@ -22,6 +22,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/Redux/store';
 import { useEffect, useState } from 'react';
 import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
+import axios from 'axios';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -55,6 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient()
 
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -65,6 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, []);
 
+  console.log("userData", userData);
 
   useCheckAccessTokenExpiryAndUpdate();
 
