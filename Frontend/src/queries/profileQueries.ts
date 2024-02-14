@@ -28,6 +28,13 @@ interface authenticateUserData {
     preferences: string[];
 }
 
+interface updateUserData {
+    fullName: string;
+    gender: string;
+    city: string;
+    preferences: string[];
+}
+
 axios.defaults.withCredentials = true;
 
 export const useRegisterUserMutation = () => {
@@ -57,11 +64,15 @@ export const useLoginUserQuery = () => {
 
 export const useAuthenticateUserQuery = () => {
     const queryClient = useQueryClient();
-    const accessToken = localStorage.getItem('accessToken');
 
     return useMutation({
         mutationKey: ['authenticate-user'],
         mutationFn: async (userData: authenticateUserData) => {
+            const accessToken = localStorage.getItem('accessToken');
+            if (!accessToken) {
+                throw new Error('Access token not found');
+            }
+            
             const formData = new FormData();
             formData.append('gender', userData.gender);
             formData.append('city', userData.city);
@@ -90,7 +101,23 @@ export const useGetUserDataQuery = () => {
     return useMutation({
         mutationKey: ['get-user-data'],
         mutationFn: async () => {
-            const response = await axios.get    (`${process.env.NEXT_PUBLIC_BASE_URL}/users/get-user-data`, {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/get-user-data`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            return response.data
+        }
+    })
+}
+
+export const useUpdateUserDataQuery = () => {
+    console.log('useUpdateUserDataQuery')
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ['update-user-data'],
+        mutationFn: async (userData: updateUserData) => {
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/users/update-user-data`, userData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }

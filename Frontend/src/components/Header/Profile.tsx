@@ -34,7 +34,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 
-export function Profile({avatar, userName}: {avatar: string, userName: string}) {
+export function Profile({ avatar, userName }: { avatar: string, userName: string }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -44,12 +44,14 @@ export function Profile({avatar, userName}: {avatar: string, userName: string}) 
                 <DropdownMenuLabel>{`Hi ${userName}`}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
-                        <Link href={'/user-profile'}><span>Profile</span></Link>
-                        
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    <Link href={'/user-profile'}>
+                        <DropdownMenuItem>
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Profile</span>
+                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>
+
 
                     <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4" />

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from '../middleware/multer.middleware'
-import { registerUser, loginUser, sendAccessToken, authenticateUser, getUserData } from "../controllers/user.controller";
+import { registerUser, loginUser, sendAccessToken, authenticateUser, getUserData, updateUserData } from "../controllers/user.controller";
 
 const router = Router();
 
@@ -25,5 +25,6 @@ router.route('/authenticate').post(
     ]), authenticateUser)
 
 router.route('/get-user-data').get(getUserData)
+router.route('/update-user-data').put(updateUserData)
 
 export default router
