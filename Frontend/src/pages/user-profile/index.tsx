@@ -10,7 +10,7 @@ const index: React.FunctionComponent = () => {
     <div>
       <Header />
       <ProtectedRoute>
-        <section className=' pt-16 flex justify-center items-center h-full top-2/4'>
+        <section className='h-full pt-16 flex justify-center items-center top-2/4'>
            <UserProfile />
         </section>
          

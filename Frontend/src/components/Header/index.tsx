@@ -123,6 +123,8 @@ const Header: React.FunctionComponent = () => {
               <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
             </Link>
 
+
+
           </Stack>
           <NavItems />
           <Stack
@@ -135,6 +137,10 @@ const Header: React.FunctionComponent = () => {
               base: 0,
             }}
           >
+
+            <div className="md:hidden gap-2 mr-2">
+              <Profile avatar={avatar} userName={username} />
+            </div>
             {/* <ColorModeSwitcher /> */}
             <Box display={{ md: "none", lg: "none" }}>
               <IconButton
@@ -169,53 +175,14 @@ const Header: React.FunctionComponent = () => {
               ) : (
                 <>
                   <div className="hidden md:flex gap-2">
-                    <Profile avatar={avatar} userName={username}/>
+                    <Profile avatar={avatar} userName={username} />
                   </div>
-                  {/* <HStack gap="2">
-                    <Button
-                      colorScheme="blue"
-                      as={Link}
-                      href="/app/dashboard"
-                      passHref
-                      variant="solid"
-                      size="md"
-                      _focus={{ boxShadow: "outline" }}
-                    >
-                      {`Continue as ${user?.displayName.split(" ")[0] ?? "Test User"
-                        }`}
-                    </Button>
-                    <Menu>
-                      <MenuButton
-                        as={Avatar}
-                        aria-label="User Account"
-                        size="sm"
-                        cursor="pointer"
-                        name={user?.displayName ?? "Test"}
-                        src={user?.photoURL}
-                      />
-                      <MenuList>
-                        <MenuItem
-                          style={{ margin: 0 }}
-                          onClick={() => router.push("/app/settings")}
-                          icon={<GrUserSettings />}
-                        >
-                          Settings
-                        </MenuItem>
-                        <MenuItem
-                          style={{ margin: 0 }}
-                          onClick={() => logoutUser()}
-                          icon={<HiOutlineLogout />}
-                        >
-                          Logout
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </HStack> */}
                 </>
               )}
             </Box>
           </Stack>
         </Flex>
+
         <CollapseMenu isOpen={isOpen} setOpen={handleToggle} />
       </Box>
     </React.Fragment>

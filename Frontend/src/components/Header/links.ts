@@ -4,15 +4,15 @@ export const links: Array<{ name: string; link: string }> = [
       link: "/",
     },
     {
+      name: "Discover",
+      link: "/discover",
+    },
+    {
+      name: "Hostels",
+      link: "/hostels",
+    },
+    {
       name: "Pricing",
       link: "/pricing",
-    },
-    {
-      name: "Lorem",
-      link: "/lorem",
-    },
-    {
-      name: "Ipsum",
-      link: "/ispum",
     },
   ];

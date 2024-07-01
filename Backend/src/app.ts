@@ -27,8 +27,10 @@ app.get('/', (req, res) => {
 // declare routes and attach routers
 
 import userRouter from './routes/user.routes';
+import listingRouter from './routes/listing.routes';
 
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/listings', listingRouter)
 
 export {app}
 

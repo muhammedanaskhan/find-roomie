@@ -21,7 +21,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import NProgress, { set } from "nprogress";
 
 import { useAuthenticateUserQuery, useGetUserDataQuery, useUpdateUserDataQuery } from '@/queries/profileQueries'
-import { Router, useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router' 
 import Link from 'next/link'
 import { Input } from '../ui/input'
 
@@ -171,19 +171,19 @@ function UserProfile() {
   }
 
   return (
-    <div className='w-3/4 lg:w-1/2'>
+    <div className='sm:w-3/4 lg:w-1/2'>
       <Toaster />
-      <Card className=" p-6 sm:p-10 lg:p-12 ">
-        <p className=' text-4xl font-bold mb-6 h-16 border-b-2'>Profile</p>
+      <Card className="mt-8 md:mt-0 p-6 sm:p-10 lg:p-12 ">
+        <p className='text-4xl font-bold mb-6 h-16 border-b-2'>Profile</p>
         <div className='flex flex-col gap-6 '>
           <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
-            <p className=' text-left font-semibold'>First Name</p>
+            <p className=' w-full lg:w-fit text-left font-semibold mb-0'>First Name</p>
             <div className='w-full flex gap-4 lg:w-52'>
               <Input placeholder="j_doe" value={firstName} onChange={handleFirstNameChange} />
             </div>
           </div>
           <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
-            <p className=' text-left font-semibold'>Last Name</p>
+            <p className=' w-full lg:w-fit text-left font-semibold'>Last Name</p>
             <div className='w-full flex gap-4 lg:w-52'>
               <Input placeholder="j_doe" value={lastName} onChange={handleLastNameChange} />
             </div>
