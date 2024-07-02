@@ -24,6 +24,7 @@ import kitchen from '@/assets/images/kitchen.svg'
 import Image from 'next/image'
 import gameConsole from '@/assets/images/game-console.svg'
 import { Button } from '../ui/button'
+import { useDebounce } from '@/hooks/useDebounce'
 
 
 const CreateRoommateListing = () => {
@@ -48,6 +49,8 @@ const CreateRoommateListing = () => {
         { name: 'Game Console', image: gameConsole, value: 'gameConsole' }
     ]
 
+
+    const debouncedLocationSearch = useDebounce(location)
 
     const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLocation(e.target.value)
