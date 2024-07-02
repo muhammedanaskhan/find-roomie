@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 import {
@@ -20,14 +20,20 @@ import washingMachine from '@/assets/images/washing-machine.svg'
 import parking from '@/assets/images/parking.svg'
 import wifi from '@/assets/images/wifi.svg'
 import cook from '@/assets/images/cook.svg'
+import gameConsole from '@/assets/images/game-console.svg'
+import locationPin from '@/assets/images/location-pin.svg'
+
 import kitchen from '@/assets/images/kitchen.svg'
 import Image from 'next/image'
-import gameConsole from '@/assets/images/game-console.svg'
 import { Button } from '../ui/button'
 import { useDebounce } from '@/hooks/useDebounce'
 
+import { Loader } from '@googlemaps/js-api-loader';
+
 
 const CreateRoommateListing = () => {
+
+    const googleMapsAPIKey = process.env.NEXT_PUBLIC_GOOGLEMAPS_API_KEY as string
 
     const [location, setLocation] = useState<string>('')
     const [lookingFor, setLookingFor] = useState<string>('Male')
@@ -49,8 +55,32 @@ const CreateRoommateListing = () => {
         { name: 'Game Console', image: gameConsole, value: 'gameConsole' }
     ]
 
-
     const debouncedLocationSearch = useDebounce(location)
+
+    useEffect(() => {
+        if (debouncedLocationSearch === '') return
+        fetchPredictions(debouncedLocationSearch)
+    }, [debouncedLocationSearch])
+
+    const fetchPredictions = async (location: string) => {
+
+        const loader = new Loader({
+            apiKey: googleMapsAPIKey, // Replace with your actual API key
+            libraries: ['places'],
+        });
+
+        loader.importLibrary('maps').then(() => {
+            const service = new google.maps.places.AutocompleteService();
+            service.getPlacePredictions({ input: location }, (predictions, status) => {
+                if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                    console.error(status);
+                    return;
+                }
+
+                console.log(predictions); //take prediction.description for the list
+            });
+        });
+    }
 
     const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLocation(e.target.value)
@@ -101,8 +131,9 @@ const CreateRoommateListing = () => {
                 <div className='flex flex-col gap-6 '>
                     <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
                         <p className=' w-full lg:w-fit text-left font-semibold mb-0'>Location</p>
-                        <div className='w-full flex gap-4 lg:w-52'>
-                            <Input placeholder="New Delhi" value={location} onChange={handleLocationChange} />
+                        <div className='w-full relative flex gap-4 lg:w-52'>
+                            <Image src={locationPin} alt='location' className='absolute h-4 w-4 top-0 bottom-0 m-auto left-2' />
+                            <Input className='pl-7' placeholder="New Delhi" value={location} onChange={handleLocationChange} />
                         </div>
                     </div>
 
