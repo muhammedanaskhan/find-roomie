@@ -127,7 +127,8 @@ export function LoginForm() {
             const axiosError = error as AxiosError;
 
             if (axiosError?.response?.status === 400) {
-                toast.error('User does not exists')
+                const errorData: any = axiosError.response.data;
+                toast.error(errorData.message)
             }
         }
         console.log(values)

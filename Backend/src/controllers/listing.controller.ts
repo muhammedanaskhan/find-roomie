@@ -77,4 +77,8 @@ const createListing = async (req: Request, res: Response) => {
     })
 }
 
+const getListing = async (req: Request, res: Response) => {
+
+}
+
 export { createListing }

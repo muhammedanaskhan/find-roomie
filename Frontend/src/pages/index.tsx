@@ -6,12 +6,20 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Header from '@/components/Header';
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
 
 import { useGetUserDataQuery } from '@/queries/profileQueries';
 import axios from 'axios';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'findroomie',
+  description: 'The official Next.js Course Dashboard, built with App Router.',
+  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+};
 
 
 export default function Home({ userData }: any) {
