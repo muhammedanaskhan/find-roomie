@@ -9,6 +9,7 @@ const createListing = async (req: Request, res: Response) => {
     const {
         userEmail,
         location,
+        geometry,
         lookingFor,
         rent,
         occupancy,
@@ -46,35 +47,65 @@ const createListing = async (req: Request, res: Response) => {
         })
     }
 
+    let parsedGeometry;
 
-    //create listing
-    const listing = await Listing.create({
-        user: user._id,
-        location,
-        lookingFor,
-        rent,
-        occupancy,
-        description,
-        roomPhotos: roomImagesUrls,
-        amenities,
-        isContactNumberPublic
-    })
-
-    const createdListing = await Listing.findById(listing._id).populate('user', '-password -refreshToken')
-
-    if (!createdListing) {
-        return res.status(500).json({
-            status: 'failed',
-            message: 'something went wrong while creating listing'
-        })
+    try {
+        parsedGeometry = typeof geometry === 'string' ? JSON.parse(geometry) : geometry;
+    } catch (error) {
+        console.error("Error parsing coordinates:", error);
+        return res.status(400).json({ error: "Invalid coordinates format" });
     }
 
-    return res.status(201).json({
-        status: 'success',
-        data: {
-            listing: createdListing
-        },
-    })
+    if (!parsedGeometry || parsedGeometry.type !== 'Point' || !Array.isArray(parsedGeometry.coordinates) || parsedGeometry.coordinates.length !== 2) {
+        return res.status(400).json({ error: "Invalid coordinates structure" });
+    }
+
+    const [longitude, latitude] = parsedGeometry.coordinates;
+    if (typeof longitude !== 'number' || typeof latitude !== 'number') {
+        return res.status(400).json({ error: "Coordinates must be numbers" });
+    }
+
+
+    console.log("parsedCoordinates", parsedGeometry)
+    //create listing
+
+    try {
+        const listing = await Listing.create({
+            user: user._id,
+            location,
+            geometry: parsedGeometry,
+            lookingFor,
+            rent,
+            occupancy,
+            description,
+            roomPhotos: roomImagesUrls,
+            amenities: JSON.parse(amenities),
+            isContactNumberPublic
+        })
+
+        const createdListing = await Listing.findById(listing._id).populate('user', '-password -refreshToken')
+
+        if (!createdListing) {
+            return res.status(500).json({
+                status: 'failed',
+                message: 'something went wrong while creating listing'
+            })
+        }
+
+        return res.status(201).json({
+            status: 'success',
+            data: {
+                listing: createdListing
+            },
+        })
+
+    } catch (error) {
+        console.error("Error creating listing:", error);
+        return res.status(500).json({ error: "Error creating listing" });
+    }
+
+
+
 }
 
 const getListing = async (req: Request, res: Response) => {

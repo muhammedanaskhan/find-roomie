@@ -3,6 +3,10 @@ import mongoose, { Mongoose, Schema, Types } from "mongoose";
 interface IListing {
     user: Types.ObjectId;
     location: string;
+    geometry: {
+        type: string;
+        coordinates: [number, number];
+    };
     lookingFor: 'Male' | 'Female' | 'Any';
     rent: number;
     occupancy: 'Single' | 'Shared' | 'Any';
@@ -22,6 +26,17 @@ const ListingSchema = new mongoose.Schema<IListing>(
         location: {
             type: String,
             required: true
+        },
+        geometry: {
+            type: {
+                type: String,
+                enum: ['Point'],
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            }
         },
         lookingFor: {
             type: String,
@@ -55,5 +70,7 @@ const ListingSchema = new mongoose.Schema<IListing>(
         }
     }
 )
+
+ListingSchema.index({ geometry: '2dsphere' })
 
 export const Listing = mongoose.model<IListing>("Listing", ListingSchema)

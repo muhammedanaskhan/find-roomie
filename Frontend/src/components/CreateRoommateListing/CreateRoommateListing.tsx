@@ -205,8 +205,18 @@ const CreateRoommateListing = () => {
 
         const formData = new FormData();
 
+        const encodedLocation = encodeURIComponent(location)
+
+        const geoCodedDataResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedLocation}&key=${googleMapsAPIKey}`)
+        const geoData = await geoCodedDataResponse.json()
+
+        const fetchedCoordinates = geoData.results[0].geometry.location
+        const lat = fetchedCoordinates.lat;
+        const lng = fetchedCoordinates.lng;
+
         formData.append('userEmail', email)
         formData.append('location', location)
+        formData.append('geometry', JSON.stringify({ type: 'Point', coordinates: [lng, lat] }))
         formData.append('lookingFor', lookingFor)
         formData.append('rent', rent.toString())
         formData.append('occupancy', occupancy)
@@ -225,18 +235,17 @@ const CreateRoommateListing = () => {
                 body: formData,
             });
 
-            if(res.status === 201) {
+            if (res.status === 201) {
                 toast.success('Listing created successfully')
                 NProgress.done();
             }
-           
+
 
         } catch (err) {
             console.error(err)
             NProgress.done();
             toast.error(`${err}`)
         }
-
 
         console.log(data)
     }
