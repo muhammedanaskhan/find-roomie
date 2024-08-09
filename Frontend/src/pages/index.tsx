@@ -14,6 +14,7 @@ import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpir
 import { useGetUserDataQuery } from '@/queries/profileQueries';
 import axios from 'axios';
 import { Metadata } from 'next';
+import SharedHeaderLayout from '@/components/Layouts/SharedHeaderLayout';
 
 export const metadata: Metadata = {
   title: 'findroomie',
@@ -25,16 +26,15 @@ export const metadata: Metadata = {
 export default function Home({ userData }: any) {
 
   return (
-    <div>
-      <Header />
+    <SharedHeaderLayout>
       <div className='relative h-lvh flex'>
-        <Image src='/bg.jpg' fill={true} alt='bg' className=' hidden lg:flex z-0 fixed opacity-10 overflow-visible' />
+        <Image src='/bg.jpg' fill={true} alt='bg' className=' hidden lg:flex z-[-2000] fixed opacity-10 overflow-visible' />
         <section
           className='flex flex-1 justify-center items-center mt-16'>
           <Hero />
         </section>
       </div>
-    </div>
+    </SharedHeaderLayout>
 
   )
 }

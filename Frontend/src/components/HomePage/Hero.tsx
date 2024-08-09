@@ -148,9 +148,10 @@ function Hero() {
           </div>
           <p className='text-slate-500'>
             <span className='font-bold'>Top cities: </span>
-            <Link href='/'>Bengaluru, </Link>
-            <Link href='/'>Heydrabad, </Link>
-            <Link href='/'>Pune.</Link>
+            <Link href='/city/Bengaluru' className='hover:underline cursor-pointer'>Bengaluru, </Link>
+            <Link href='/city/Heydrabad' className='hover:underline cursor-pointer'>Heydrabad, </Link>
+            <Link href='/city/Mumbai' className='hover:underline cursor-pointer'>Mumbai, </Link>
+            <Link href='/city/Pune' className='hover:underline cursor-pointer'>Pune.</Link>
           </p>
         </div>
 
