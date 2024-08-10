@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createListing } from "../controllers/listing.controller";
+import { createListing, getListings } from "../controllers/listing.controller";
 import { upload } from "../middleware/multer.middleware";
 
 const router = Router();
@@ -11,6 +11,8 @@ router.route('/create').post(
             maxCount: 3
         }
     ])
-    ,createListing)
+    , createListing)
+
+router.route('/fetch').get(getListings)
 
 export default router

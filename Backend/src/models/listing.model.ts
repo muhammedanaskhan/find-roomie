@@ -3,6 +3,7 @@ import mongoose, { Mongoose, Schema, Types } from "mongoose";
 interface IListing {
     user: Types.ObjectId;
     location: string;
+    city: string;
     geometry: {
         type: string;
         coordinates: [number, number];
@@ -26,6 +27,11 @@ const ListingSchema = new mongoose.Schema<IListing>(
         location: {
             type: String,
             required: true
+        },
+        city: {
+            type: String,
+            required: true,
+            index: true  
         },
         geometry: {
             type: {

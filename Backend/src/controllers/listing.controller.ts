@@ -9,6 +9,7 @@ const createListing = async (req: Request, res: Response) => {
     const {
         userEmail,
         location,
+        city,
         geometry,
         lookingFor,
         rent,
@@ -73,6 +74,7 @@ const createListing = async (req: Request, res: Response) => {
         const listing = await Listing.create({
             user: user._id,
             location,
+            city,
             geometry: parsedGeometry,
             lookingFor,
             rent,
@@ -108,8 +110,67 @@ const createListing = async (req: Request, res: Response) => {
 
 }
 
-const getListing = async (req: Request, res: Response) => {
+    const getListings = async (req: Request, res: Response) => {
+        const { searchTerm, maxDistanceInMeters, lat, lng } = req.query;
 
+        console.log("Query", req.query)
+        try {
+            const listings = await searchListings(searchTerm as string, Number(maxDistanceInMeters), Number(lat), Number(lng));
+
+            console.log("Listings", listings)
+
+            return res.status(201).json({
+                status: 'success',
+                data: {
+                    listings: listings
+                },
+            })
+
+        } catch (error) {
+            console.error("Error fetching listings:", error);
+            res.status(500).json({ error: 'An error occurred while searching listings' });
+        }
+    }
+
+const searchListings = async (searchTerm: string, maxDistanceInMeters: number, lat?: number, lng?: number) => {
+    let query;
+
+    if (lat && lng) {
+        try {
+
+            const listings = await Listing.aggregate([
+                {
+                    $geoNear: {
+                        near: {
+                            type: "Point",
+                            coordinates: [lng, lat]
+                        },
+                        distanceField: "distance",
+                        maxDistance: maxDistanceInMeters,
+                        spherical: true
+                    }
+                },
+                {
+                    $sort: { distance: 1 } // Sort by distance ascending
+                }
+            ]);
+
+            console.log("Listings", listings)
+
+            return listings;
+        } catch (error) {
+            console.error("Error parsing coordinates:", error);
+        }
+
+
+    } else {
+        const cityQuery = searchTerm ? { city: { $regex: new RegExp(searchTerm, 'i') } } : {};
+
+        query = Listing.find(cityQuery).sort({ createdAt: -1 });
+
+        const listings = await query.exec();
+        return listings;
+    }
 }
 
-export { createListing }
+export { createListing, getListings }
