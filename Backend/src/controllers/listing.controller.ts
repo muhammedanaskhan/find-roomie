@@ -156,9 +156,14 @@ const searchListings = async (searchTerm: string, maxDistanceInMeters: number, l
                 }
             ]);
 
+            const populatedListings = await Listing.populate(listings, {
+                path: 'user',
+                select: 'avatar fullName'
+            });
+
             console.log("Listings", listings)
 
-            return listings;
+            return populatedListings;
         } catch (error) {
             console.error("Error parsing coordinates:", error);
         }

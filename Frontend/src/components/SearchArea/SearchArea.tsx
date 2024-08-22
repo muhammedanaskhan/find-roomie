@@ -58,11 +58,21 @@ const SearchArea = () => {
     }
 
 
-    const handleSelectSuggestion = (suggestion: string) => {
+    const handleSelectSuggestion = async (suggestion: string) => {
         // location sleected from dropdown
         setIsSuggestionSelected(true)
         setLocation(suggestion)
-        router.push(`/property?address=${encodeURIComponent(suggestion)}&gender=all`)
+
+        //fetch coordinates for selected location
+        const encodedLocation = encodeURIComponent(suggestion)
+        const geoCodedDataResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedLocation}&key=${googleMapsAPIKey}`)
+        const geoData = await geoCodedDataResponse.json()
+        const city = geoData.results[0].address_components.find((component: any) => component.types.includes('locality'))?.long_name
+        const fetchedCoordinates = geoData.results[0].geometry.location
+        const lat = fetchedCoordinates.lat;
+        const lng = fetchedCoordinates.lng;
+
+        router.push(`/property?address=${encodeURIComponent(suggestion)}&lat=${lat}&lng=${lng}&gender=all`)
     }
 
     const handleLocationChange = (search: string) => {

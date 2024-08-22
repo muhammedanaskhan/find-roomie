@@ -5,9 +5,7 @@ const Listings = ({ address, listings }: any) => {
 
     console.log("Listingssssssss", listings)
 
-
     const [fetchedListings, setFetchedListings] = React.useState(listings)
-
 
     React.useEffect(() => {
         setFetchedListings(listings)
@@ -25,7 +23,6 @@ const Listings = ({ address, listings }: any) => {
                     />
                 )
             })}
-            <div className="">lsting</div>
         </div>
     )
 }
