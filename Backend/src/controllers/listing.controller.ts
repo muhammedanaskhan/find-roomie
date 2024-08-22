@@ -110,27 +110,28 @@ const createListing = async (req: Request, res: Response) => {
 
 }
 
-    const getListings = async (req: Request, res: Response) => {
-        const { searchTerm, maxDistanceInMeters, lat, lng } = req.query;
+const getListings = async (req: Request, res: Response) => {
+    const { searchTerm, maxDistanceInMeters, lat, lng } = req.query;
 
-        console.log("Query", req.query)
-        try {
-            const listings = await searchListings(searchTerm as string, Number(maxDistanceInMeters), Number(lat), Number(lng));
+    console.log("Query", req.query)
+    try {
+        const listings = await searchListings(searchTerm as string, Number(maxDistanceInMeters), Number(lat), Number(lng));
 
-            console.log("Listings", listings)
 
-            return res.status(201).json({
-                status: 'success',
-                data: {
-                    listings: listings
-                },
-            })
+        console.log("Listings", listings)
 
-        } catch (error) {
-            console.error("Error fetching listings:", error);
-            res.status(500).json({ error: 'An error occurred while searching listings' });
-        }
+        return res.status(201).json({
+            status: 'success',
+            data: {
+                listings: listings
+            },
+        })
+
+    } catch (error) {
+        console.error("Error fetching listings:", error);
+        res.status(500).json({ error: 'An error occurred while searching listings' });
     }
+}
 
 const searchListings = async (searchTerm: string, maxDistanceInMeters: number, lat?: number, lng?: number) => {
     let query;
@@ -166,7 +167,7 @@ const searchListings = async (searchTerm: string, maxDistanceInMeters: number, l
     } else {
         const cityQuery = searchTerm ? { city: { $regex: new RegExp(searchTerm, 'i') } } : {};
 
-        query = Listing.find(cityQuery).sort({ createdAt: -1 });
+        query = Listing.find(cityQuery).sort({ createdAt: -1 }).populate('user', 'avatar fullName').select('location lookingFor rent')
 
         const listings = await query.exec();
         return listings;

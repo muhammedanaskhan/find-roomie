@@ -1,15 +1,32 @@
 import React, { use } from 'react'
+import ListingCard from '../Cards/ListingCard'
 
-const Listings = ({ address }: any) => {
+const Listings = ({ address, listings }: any) => {
 
-    const [listings, setListings] = React.useState([])
+    console.log("Listingssssssss", listings)
+
+
+    const [fetchedListings, setFetchedListings] = React.useState(listings)
+
 
     React.useEffect(() => {
-        // fetchlistings
-    }
-        , [address])
+        setFetchedListings(listings)
+    }, [listings])
     return (
-        <div>Listings</div>
+        <div>
+            {listings?.length > 0 && listings.map((listing: any) => {
+                return (
+                    <ListingCard
+                        userName={listing.user.fullName}
+                        userAvatar={listing.user.avatar}
+                        location={listing.location}
+                        rent={listing.rent}
+                        lookingFor={listing.lookingFor}
+                    />
+                )
+            })}
+            <div className="">lsting</div>
+        </div>
     )
 }
 

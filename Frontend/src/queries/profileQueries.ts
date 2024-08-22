@@ -4,7 +4,7 @@ import {
     useQueryClient,
 
 } from '@tanstack/react-query'
-import { userType } from '@/types/user'
+import { userType } from '@/types/types'
 import axios from 'axios'
 
 interface UserData {

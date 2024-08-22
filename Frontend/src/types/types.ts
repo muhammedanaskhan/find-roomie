@@ -1,0 +1,21 @@
+type userType = {
+    "_id": string,
+    "firstName": string,
+    "lastName": string,
+    "userName": string,
+    "email": string,
+    "password": string,
+    "avatar": string,
+    "gender": string,
+    "contactNumber": string
+}
+
+type listingCardPropsType = {
+    userName: string,
+    userAvatar: string,
+    location: string,
+    rent: number,
+    lookingFor: string,
+}
+
+export type { userType, listingCardPropsType }

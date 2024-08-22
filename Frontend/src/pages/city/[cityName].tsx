@@ -10,11 +10,12 @@ const Page = ({ data }: any) => {
     const router = useRouter()
     const cityName = router.query
 
-    console.log(data)
+    console.log(data.listings)
+
     return (
         <SharedHeaderLayout>
             <ListingSearchAreaLayout>
-                <Listings address={cityName} />
+                <Listings address={cityName} listings={data.data.listings} />
             </ListingSearchAreaLayout>
         </SharedHeaderLayout>
     )
@@ -34,7 +35,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         }
     )
     const data = await res.json()
-
-    // Pass data to the page via props
     return { props: { data } }
 }
