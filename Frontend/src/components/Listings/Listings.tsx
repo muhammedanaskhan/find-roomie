@@ -20,6 +20,7 @@ const Listings = ({ address, listings }: any) => {
                         userAvatar={listing.user.avatar}
                         location={listing.location}
                         rent={listing.rent}
+                        distanceInKm={listing.distanceInKm}
                         lookingFor={listing.lookingFor}
                     />
                 )

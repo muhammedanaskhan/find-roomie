@@ -16,6 +16,7 @@ type listingCardPropsType = {
     location: string,
     rent: number,
     lookingFor: string,
+    distanceInKm: number
 }
 
 export type { userType, listingCardPropsType }

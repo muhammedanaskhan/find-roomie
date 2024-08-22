@@ -152,6 +152,11 @@ const searchListings = async (searchTerm: string, maxDistanceInMeters: number, l
                     }
                 },
                 {
+                    $addFields: {
+                        distanceInKm: { $divide: ["$distance", 1000] } // Convert meters to kilometers
+                    }
+                },
+                {
                     $sort: { distance: 1 } // Sort by distance ascending
                 }
             ]);
