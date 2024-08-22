@@ -92,6 +92,7 @@ module.exports = {
         "lemon": "var(--font-lemon)",
         "geist-sans": ['var(--font-geist-sans)'],
         "geist-mono": ['var(--font-geist-mono)'],
+        "montserrat": "var(--font-montserrat)"
       }
     },
   },

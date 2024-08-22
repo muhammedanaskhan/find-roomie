@@ -8,16 +8,8 @@ export const links: Array<{ name: string; link: string }> = [
     link: "/discover",
   },
   {
-    name: "city/indore",
+    name: "Indore",
     link: "/city/indore",
-  },
-  {
-    name: "city/jaipur",
-    link: "/city/jaipur",
-  },
-  {
-    name: "Hostels",
-    link: "/hostels",
   },
   {
     name: "Pricing",

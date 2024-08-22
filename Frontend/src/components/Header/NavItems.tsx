@@ -26,7 +26,7 @@ const NavItems: React.FunctionComponent = () => {
                 href={item.link}
                 passHref
                 _focus={{ boxShadow: "outline" }}
-                className=" text-primaryBlue"
+                className=" text-primaryBlue font-montserrat"
               >
                 {item.name}
               </Button>

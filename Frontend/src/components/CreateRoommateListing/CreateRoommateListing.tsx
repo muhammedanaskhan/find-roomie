@@ -263,7 +263,7 @@ const CreateRoommateListing = () => {
 
 
     return (
-        <div className='sm:w-3/4 lg:w-1/2'>
+        <div className='sm:w-3/4 lg:w-1/2 px-4'>
 
             <Toaster />
             <Card className="mt-8 md:mt-0 p-6 sm:p-10 lg:p-12 mb-4 ">

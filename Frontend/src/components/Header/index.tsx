@@ -122,9 +122,6 @@ const Header: React.FunctionComponent = () => {
               <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority />
               <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
             </Link>
-
-
-
           </Stack>
           <NavItems />
           <Stack
@@ -137,10 +134,13 @@ const Header: React.FunctionComponent = () => {
               base: 0,
             }}
           >
+            <Link href={'/listing/roommate'} className="mr-4">
+              <button className="hidden sm:flex text-primaryBlue border font-montserrat text-[14px] border-primaryBlue px-6 py-1 rounded-[56px] relative">Listing <span className="absolute bg-white text-[24px] top-[-20px] right-1 font-geist-sans w-[20px]">+</span></button>
+            </Link>
 
-            <div className="md:hidden gap-2 mr-2">
+            {isUserAuthenticated && <div className="md:hidden gap-2 mr-2">
               <Profile avatar={avatar} userName={username} />
-            </div>
+            </div>}
             {/* <ColorModeSwitcher /> */}
             <Box display={{ md: "none", lg: "none" }}>
               <IconButton
@@ -183,7 +183,12 @@ const Header: React.FunctionComponent = () => {
           </Stack>
         </Flex>
 
-        <CollapseMenu isOpen={isOpen} setOpen={handleToggle} />
+        <CollapseMenu
+          isOpen={isOpen}
+          setOpen={handleToggle}
+          isUserAuthenticated={isUserAuthenticated}
+          avatar={avatar}
+          userName={username} />
       </Box>
     </React.Fragment>
   );

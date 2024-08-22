@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 
-import { Barlow_Condensed, Inter, Josefin_Sans, Lemon } from 'next/font/google';
+import { Barlow_Condensed, Inter, Josefin_Sans, Lemon, Montserrat } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import Nav from '@/components/Nav/Nav';
@@ -46,6 +46,11 @@ const lemon = Lemon({
   variable: '--font-lemon',
 });
 
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+})
+
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
@@ -75,7 +80,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <main
-        className={`${inter.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen`}
+        className={`${inter.variable} ${montserrat.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen`}
       >
         <ChakraProvider>
           <QueryClientProvider client={queryClient}>

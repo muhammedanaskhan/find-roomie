@@ -11,7 +11,7 @@ const Listings = ({ address, listings }: any) => {
         setFetchedListings(listings)
     }, [listings])
     return (
-        <div>
+        <div className='font-montserrat'>
             {listings?.length > 0 && listings.map((listing: any) => {
                 return (
                     <ListingCard

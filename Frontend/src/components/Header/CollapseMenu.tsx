@@ -32,11 +32,17 @@ import { HiOutlineLogout } from "react-icons/hi";
 interface SidebarProps {
   isOpen: boolean;
   setOpen: () => void;
+  isUserAuthenticated: any;
+  avatar: any;
+  userName: any
 }
 
 const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
   isOpen,
   setOpen,
+  isUserAuthenticated,
+  avatar,
+  userName,
 }) => {
   // const { user, logout } = useAuth();
   // const user ={
@@ -56,9 +62,16 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
     setOpen();
   };
 
+  console.log("isUserAuthenticated", isUserAuthenticated)
+
+  const handleLogout = () => {
+    setOpen()
+    localStorage.clear();
+    window.location.href = '/';
+  }
   return (
     <React.Fragment>
-      <Collapse in={isOpen}>
+      <Collapse in={isOpen} className="font-montserrat">
         <Box
           display={{
             base: "none",
@@ -115,7 +128,7 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
               xs: "flex",
             }}
           >
-            {!user ? (
+            {!isUserAuthenticated ? (
               <>
                 <div className="flex flex-col gap-2">
                   <Link href='/login' >
@@ -128,52 +141,12 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
               </>
             ) : (
               <>
-                {/* <HStack gap="2">
-                  <Button
-                    colorScheme="blue"
-                    as={Link}
-                    href="/app/dashboard"
-                    passHref
-                    variant="solid"
-                    size={{
-                      base: "md",
-                      xl: "md",
-                      lg: "md",
-                      sm: "sm",
-                      xs: "sm",
-                    }}
-                    _focus={{ boxShadow: "outline" }}
-                  >
-                    {`Continue as ${user.displayName ?? "Test User"}`}
-                  </Button>
-                  <Menu>
-                    <MenuButton
-                      as={Avatar}
-                      aria-label="User Account"
-                      size="sm"
-                      p="2"
-                      cursor="pointer"
-                      name={user?.displayName ?? "Test User"}
-                      src={user?.photoURL}
-                    />
-                    <MenuList>
-                      <MenuItem
-                        style={{ margin: 0 }}
-                        onClick={() => router.push("/app/settings")}
-                        icon={<GrUserSettings />}
-                      >
-                        Settings
-                      </MenuItem>
-                      <MenuItem
-                        style={{ margin: 0 }}
-                        onClick={() => logoutUser()}
-                        icon={<HiOutlineLogout />}
-                      >
-                        Logout
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                </HStack> */}
+                <div className="flex flex-col gap-2">
+                  <Link href='/listing/roommate'>
+                    <Button className=' w-full' variant="outline" onClick={() => setOpen()}>Add Listing</Button>
+                  </Link>
+                  <Button className="bg-primaryBlue text w-full" onClick={handleLogout}>Logout</Button>
+                </div>
               </>
             )}
           </Box>
