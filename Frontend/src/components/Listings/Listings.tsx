@@ -15,6 +15,7 @@ const Listings = ({ address, listings }: any) => {
             {listings?.length > 0 && listings.map((listing: any) => {
                 return (
                     <ListingCard
+                        key={listing._id}
                         userName={listing.user.fullName}
                         userAvatar={listing.user.avatar}
                         location={listing.location}

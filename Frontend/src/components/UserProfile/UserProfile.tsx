@@ -21,7 +21,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import NProgress, { set } from "nprogress";
 
 import { useAuthenticateUserQuery, useGetUserDataQuery, useUpdateUserDataQuery } from '@/queries/profileQueries'
-import { Router, useRouter } from 'next/router' 
+import { Router, useRouter } from 'next/router'
 import Link from 'next/link'
 import { Input } from '../ui/input'
 
@@ -64,7 +64,7 @@ function UserProfile() {
   const [username, setUsername] = useState('');
   const [gender, setGender] = useState<string | null>(null);
   const [city, setCity] = useState<string | null>(null);
-  const[preferences, setPreferences] = useState<string[] | null>(null)
+  const [preferences, setPreferences] = useState<string[] | null>(null)
 
   const router = useRouter();
 
@@ -127,10 +127,10 @@ function UserProfile() {
 
   const handleSubmit = async () => {
 
-    if(firstName == null){
+    if (firstName == null) {
       toast.error('Enter your first name')
     }
-    else if(lastName == null){
+    else if (lastName == null) {
       toast.error('Enter your last name')
     }
     else if (gender == null) {
@@ -211,7 +211,7 @@ function UserProfile() {
               <Dropdown onSelectValue={handleSelectCity} fetchedCity={city} />
             </div>
           </div>
-       
+
           <div className='flex flex-col justify-between items-center'>
             <p className='text-left w-full font-semibold'>Select Preferences: </p>
             <div className='flex w-full flex-wrap gap-2 mt-6 justify-center'>
@@ -219,6 +219,7 @@ function UserProfile() {
                 allPreferences?.map((preference, index) => {
                   return (
                     <button
+                      key={index}
                       className={`h-8 flex hover:transform hover:scale-105 transition-transform duration-100 ease-in-out justify-center items-center px-6 border-2 rounded-xl border-slate-200 ${preferences?.includes(preference) ? 'bg-primaryBlue text-white border-primaryBlue' : ''}`}
                       onClick={() => handleSelectPreference(preference)}>
                       {preference}
@@ -230,7 +231,7 @@ function UserProfile() {
           </div>
           <Button className='w-full sm:w-1/2 left-0 right-0 m-auto mt-6 bg-primaryBlue hover:bg-primaryBlue'
             onClick={handleSubmit}
-            >
+          >
             Update Profile
           </Button>
         </div>

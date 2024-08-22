@@ -27,18 +27,13 @@ function AvatarCropPopup({ file, closeModal, onCroppedImageFile }: Props) {
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | undefined>();
     const [croppedImage, setCroppedImage] = useState<string | null>(null);
+    const [croppedImageFile, setCroppedImageFile] = useState<File | null>(null);
 
-    const[croppedImageFile, setCroppedImageFile] = useState<File | null>(null);
-
+    const imageUrl = file ? URL.createObjectURL(file) : '';
 
     const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
         setCroppedAreaPixels(croppedAreaPixels);
     };
-
-    if (!file) return null;
-
-
-    const imageUrl = URL.createObjectURL(file);
 
     const showCroppedImage = useCallback(async () => {
         try {

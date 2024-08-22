@@ -215,6 +215,7 @@ function PersonalDetails() {
                 preferences.map((preference, index) => {
                   return (
                     <button
+                      key={index}
                       className={`h-8 flex hover:transform hover:scale-105 transition-transform duration-100 ease-in-out justify-center items-center px-6 border-2 rounded-xl border-slate-200 ${selectedPreferences?.includes(preference) ? 'bg-primaryBlue text-white border-primaryBlue' : ''}`}
                       onClick={() => handleSelectPreference(preference)}>
                       {preference}

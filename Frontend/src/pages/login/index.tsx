@@ -6,8 +6,6 @@ import React from 'react'
 
 function index() {
 
-  useProtectAuthPages();
-
   return (
     <div className='w-full h-screen flex justify-center items-center  bg-opacity-20 bg-white bg-cover backdrop-blur-lg shadow-lg'>
       <LoginForm />
