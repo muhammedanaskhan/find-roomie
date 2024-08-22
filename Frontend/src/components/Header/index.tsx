@@ -102,6 +102,7 @@ const Header: React.FunctionComponent = () => {
         zIndex="10"
         minW="100%"
         px={{ base: 20, lg: 20, md: 20, sm: 0, xs: 0 }}
+        className="headerShadow"
       >
         <Flex
           backdropFilter="blur(4px)"
