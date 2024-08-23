@@ -135,7 +135,7 @@ const Header: React.FunctionComponent = () => {
               base: 0,
             }}
           >
-            <Link href={'/listing/roommate'} className="mr-4">
+            <Link href={'/listing/add'} className="mr-4">
               <button className="hidden sm:flex text-primaryBlue border font-montserrat text-[14px] border-primaryBlue px-6 py-1 rounded-[56px] relative">Listing <span className="absolute bg-white text-[24px] top-[-20px] right-1 font-geist-sans w-[20px]">+</span></button>
             </Link>
 

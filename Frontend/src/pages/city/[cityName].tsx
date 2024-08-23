@@ -26,7 +26,7 @@ export default Page
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     const { cityName } = context.query;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/listings/fetch?searchTerm=${cityName}`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/listings/allListings?searchTerm=${cityName}`,
         {
             method: 'GET',
             headers: {

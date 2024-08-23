@@ -28,7 +28,7 @@ export default Property
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     const { lat, lng } = context.query;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/listings/fetch?maxDistanceInMeters=${20000}&lat=${lat}&lng=${lng}`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/listings/allListings?maxDistanceInMeters=${20000}&lat=${lat}&lng=${lng}`,
         {
             method: 'GET',
             headers: {

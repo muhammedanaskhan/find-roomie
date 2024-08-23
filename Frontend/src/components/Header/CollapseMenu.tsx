@@ -142,7 +142,7 @@ const CollapseMenu: React.FunctionComponent<SidebarProps> = ({
             ) : (
               <>
                 <div className="flex flex-col gap-2">
-                  <Link href='/listing/roommate'>
+                  <Link href='/listing/add'>
                     <Button className=' w-full' variant="outline" onClick={() => setOpen()}>Add Listing</Button>
                   </Link>
                   <Button className="bg-primaryBlue text w-full" onClick={handleLogout}>Logout</Button>

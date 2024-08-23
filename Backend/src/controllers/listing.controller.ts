@@ -184,4 +184,24 @@ const searchListings = async (searchTerm: string, maxDistanceInMeters: number, l
     }
 }
 
-export { createListing, getListings }
+const getListingDetails = async (req: Request, res: Response) => {
+    const { listingId } = req.query;
+    console.log("ListingId", listingId)
+
+    try {
+        const listing = await Listing.findById(listingId).populate('user', '-password -refreshToken');
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                listing: listing
+            },
+        })
+    }
+    catch (error) {
+        console.error("Error fetching listing details:", error);
+        return res.status(400).json({ error: "Error fetching listing details" });
+    }
+}
+
+export { createListing, getListings, getListingDetails }
