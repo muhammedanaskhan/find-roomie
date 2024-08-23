@@ -1,6 +1,6 @@
 import ListingSearchAreaLayout from '@/components/Layouts/ListingSearchAreaLayout'
 import SharedHeaderLayout from '@/components/Layouts/SharedHeaderLayout'
-import Listings from '@/components/Listings/Listings'
+import ListingsWithDistance from '@/components/Listings/ListingsWithDistance'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -16,7 +16,7 @@ const Property = ({ data }: any) => {
         <SharedHeaderLayout>
             <ListingSearchAreaLayout>
                 <div>
-                    <Listings address={address} listings={listings} />
+                    <ListingsWithDistance address={address} listings={listings} />
                 </div>
             </ListingSearchAreaLayout>
         </SharedHeaderLayout>

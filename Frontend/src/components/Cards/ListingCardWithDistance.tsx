@@ -3,12 +3,14 @@ import Image from 'next/image'
 import React from 'react'
 
 const ListingCard: React.FC<listingCardPropsType> = (
-    { userName, userAvatar, location, rent, lookingFor }
+    { userName, userAvatar, location, rent, lookingFor, distanceInKm }
 ) => {
 
+
+    const distance = distanceInKm.toFixed(1)
     return (
         <div className='group listingCard rounded-[16px] border max-w-[482px]  border-gray-200 px-5 py-3 transition-all duration-300 ease-in-out hover:shadow-lg overflow-hidden relative'>
-            <div className="flex gap-[24px] justify-center items-center transition-all duration-300 ease-in-out ">
+            <div className="flex gap-[24px] justify-center items-center transition-all duration-300 ease-in-out transform group-hover:pb-5">
                 <Image
                     src={userAvatar}
                     alt='user'
@@ -32,6 +34,11 @@ const ListingCard: React.FC<listingCardPropsType> = (
                         </div>
                     </main>
                 </div>
+            </div>
+            <div className="absolute bottom-0 left-5 right-0 h-0 group-hover:h-[32px] transition-all duration-300  ease-in-out transform translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
+                <span className="text-[12px]">
+                    <span className="font-medium">{`${distance} km`}</span>{` from your search`}
+                </span>
             </div>
         </div>
     )
