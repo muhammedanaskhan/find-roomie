@@ -35,6 +35,12 @@ import Link from "next/link"
 
 
 export function Profile({ avatar, userName }: { avatar: string, userName: string }) {
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.href = '/';
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -92,7 +98,7 @@ export function Profile({ avatar, userName }: { avatar: string, userName: string
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
