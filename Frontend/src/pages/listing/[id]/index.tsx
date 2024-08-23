@@ -17,7 +17,7 @@ const index: React.FunctionComponent = ({ data }: any) => {
             <Header />
             <ProtectedRoute>
                 <section className='h-full pt-16 flex justify-center items-center top-2/4'>
-                    <ListingDetails />
+                    <ListingDetails listingDetails={data.data.listing} />
                 </section>
 
             </ProtectedRoute>

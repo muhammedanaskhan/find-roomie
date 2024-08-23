@@ -7,7 +7,7 @@ const ListingCard: React.FC<listingCardPropsType> = (
 ) => {
 
     return (
-        <div className='group listingCard rounded-[16px] border max-w-[482px]  border-gray-200 px-5 py-3 transition-all duration-300 ease-in-out hover:shadow-lg overflow-hidden relative'>
+        <div className='group listingCard rounded-[16px] border max-w-[482px]  border-gray-200 px-5 py-3 hover:scale-[1.025] transition-all duration-300 ease-in-out  overflow-hidden relative'>
             <div className="flex gap-[24px] justify-center items-center transition-all duration-300 ease-in-out ">
                 <Image
                     src={userAvatar}
