@@ -14,19 +14,9 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import styles from '@/components/PersonalDetails/AvatarCropPopup.module.css'
 
-import ac from '@/assets/images/ac.svg'
-import fridge from '@/assets/images/fridge.svg'
-import tv from '@/assets/images/tv.svg'
-import washingMachine from '@/assets/images/washing-machine.svg'
-import parking from '@/assets/images/parking.svg'
-import wifi from '@/assets/images/wifi.svg'
-import cook from '@/assets/images/cook.svg'
-import gameConsole from '@/assets/images/game-console.svg'
-import locationPin from '@/assets/images/location-pin.svg'
 import upload from '@/assets/images/upload.svg'
 import cross from '@/assets/images/cross.svg'
-
-import kitchen from '@/assets/images/kitchen.svg'
+import locationPin from '@/assets/images/location-pin.svg'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -53,6 +43,7 @@ import { Skeleton } from '../ui/skeleton'
 import { useGetUserDataQuery } from '@/queries/profileQueries'
 import { useRouter } from 'next/router'
 import { FileUploader } from 'react-drag-drop-files'
+import { amenities } from '@/lib/constants'
 
 const CreateRoommateListing = () => {
 
@@ -73,17 +64,7 @@ const CreateRoommateListing = () => {
     const [isSuggestionSelected, setIsSuggestionSelected] = useState<boolean>(false)
     const [isSuggestionsLoading, setIsSuggestionsLoading] = useState<boolean>(false)
 
-    const amenities = [
-        { name: 'AC', image: ac, value: 'ac' },
-        { name: 'Fridge', image: fridge, value: 'fridge' },
-        { name: 'TV', image: tv, value: 'tv' },
-        { name: 'Washing Machine', image: washingMachine, value: 'washingMachine' },
-        { name: 'Parking', image: parking, value: 'parking' },
-        { name: 'Wifi', image: wifi, value: 'wifi' },
-        { name: 'Cook', image: cook, value: 'cook' },
-        { name: 'Kitchen', image: kitchen, value: 'kitchen' },
-        { name: 'Game Console', image: gameConsole, value: 'gameConsole' }
-    ]
+
 
     const debouncedLocationSearch = useDebounce(location)
 
