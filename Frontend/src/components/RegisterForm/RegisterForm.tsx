@@ -30,6 +30,10 @@ import { useAppDispatch } from "@/Redux/hooks"
 import { setAuth } from "@/Redux/authSlice"
 import { Card } from "../ui/card"
 
+import eyeOff from "@/assets/images/eyeOff.svg"
+import eyeOn from "@/assets/images/eyeOn.svg"
+import Image from "next/image"
+
 const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -160,14 +164,20 @@ export function RegisterForm() {
     }
 
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
+
     return (
         <Card className=" p-6 sm:p-10 lg:p-12">
-              <div className='flex justify-center items-center mb-8'>
-                    <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        {/* <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority /> */}
-                        <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
-                    </Link>
-                </div>
+            <div className='flex justify-center items-center mb-8'>
+                <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                    {/* <Image width={32} height={32} src="/findroomieIcon.webp" className="h-8" alt="Flowbite Logo" priority /> */}
+                    <span className="self-center text-2xl font-lemon  whitespace-nowrap dark:text-white ">findroomie</span>
+                </Link>
+            </div>
             <Form {...form}>
                 <Toaster />
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 min-w-64 max-w-lg">
@@ -225,19 +235,35 @@ export function RegisterForm() {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="j@d@sssup" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    <div className="relative">
+                        <FormField
+                            control={form.control}
+                            name="password"
+
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input type={showPassword ? 'text' : 'password'} placeholder="j@d@sssup" {...field} />
+
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute inset-y-[50px] right-2 flex items-center focus:outline-none"
+                        >
+                            {showPassword ? (
+                                <Image src={eyeOff} alt="hide password" width={20} height={20} />
+                            ) : (
+                                <Image src={eyeOn} alt="show password" width={20} height={20} />
+                            )}
+                        </button>
+                    </div>
+
                     <p>Already have an account? <span><Link href='/login'>Login</Link></span></p>
                     <Button type="submit" className="w-full hover:bg-primaryBlue  bg-primaryBlue">Submit</Button>
 
