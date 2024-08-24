@@ -250,7 +250,7 @@ const CreateRoommateListing = () => {
             <Card className="mt-8 md:mt-0 p-6 sm:p-10 lg:p-12 mb-4 ">
                 <p className='text-2xl sm:text-4xl font-bold mb-6 h-16 border-b-2'>Add details for your place.</p>
                 <div className='flex flex-col gap-6 '>
-                    <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-left'>
+                    <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
                         <p className=' w-full lg:w-fit text-left font-semibold mb-0'>Location</p>
                         <div className='w-full relative flex gap-4 lg:w-72'>
                             {/* <Image src={locationPin} alt='location' className='absolute h-4 w-4 top-0 bottom-0 m-auto left-2' /> */}
