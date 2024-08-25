@@ -23,6 +23,7 @@ interface LoginUserData {
 
 interface authenticateUserData {
     gender: string;
+    country: string;
     city: string;
     avatar: File | null;
     preferences: string[];
@@ -75,6 +76,7 @@ export const useAuthenticateUserQuery = () => {
             
             const formData = new FormData();
             formData.append('gender', userData.gender);
+            formData.append('country', userData.country);
             formData.append('city', userData.city);
             if (userData.avatar !== null) {
                 formData.append('avatar', userData.avatar);

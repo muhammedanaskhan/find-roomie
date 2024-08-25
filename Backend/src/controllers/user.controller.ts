@@ -208,6 +208,7 @@ const authenticateUser = AsyncHandler(async (req, res) => {
 
     const gender = req.body.gender;
     const city = req.body.city;
+    const country = req.body.country;
     const preferencesArray = JSON.parse(req.body.preferences);
 
     const user = await User.findById(decoded._id)
@@ -217,6 +218,7 @@ const authenticateUser = AsyncHandler(async (req, res) => {
     user.avatar = avatar.secure_url;
     user.gender = gender;
     user.city = city;
+    user.country = country;
     user.preferences = preferencesArray;
     user.isUserAuthenticated = true;
 

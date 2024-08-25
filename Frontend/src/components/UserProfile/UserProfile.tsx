@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/card"
 
 import { Button } from "@/components/ui/button"
-import { Dropdown } from './Dropdown'
 import { FileUploader } from 'react-drag-drop-files'
 
 import styles from "./AvatarCropPopup.module.css";
@@ -50,6 +49,8 @@ function UserProfile() {
           setLastName(fetchedLastName)
           setGender(result.data.gender);
           setCity(result.data.city);
+          setCountry(result.data.country);
+          setIsInitialCityDataFetched(false)
           setPreferences(result.data.preferences)
 
           console.log('User data:', result.data);
@@ -73,6 +74,7 @@ function UserProfile() {
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null)
   const [isCountrySuggestionSelected, setIsCountrySuggestionSelected] = useState<boolean>(false)
   const [isCountrySuggestionsLoading, setIsCountrySuggestionsLoading] = useState<boolean>(false)
+  const [isInitialCountryDataFetched, setIsInitialCountryDataFetched] = useState<boolean>(false)
 
   const handleCountryChange = (search: string) => {
     setCountrySearchSuggestions([])
@@ -95,7 +97,12 @@ function UserProfile() {
   const debouncedCountrySearch = useDebounce(country, 500)
 
   useEffect(() => {
+    console.log('isInitialCountryDataFetched:', isInitialCountryDataFetched);
     if (debouncedCountrySearch === '' || isCountrySuggestionSelected) return
+    if (!isInitialCountryDataFetched) {
+      setIsInitialCountryDataFetched(true)
+      return
+    }
     fetchCountryPredictions(debouncedCountrySearch)
   }, [debouncedCountrySearch])
 
@@ -129,6 +136,7 @@ function UserProfile() {
   const [citySearchSuggestions, setCitySearchSuggestions] = useState<any[]>([])
   const [isCitySuggestionSelected, setIsCitySuggestionSelected] = useState<boolean>(false)
   const [isCitySuggestionsLoading, setIsCitySuggestionsLoading] = useState<boolean>(false)
+  const [isInitialCityDataFetched, setIsInitialCityDataFetched] = useState<boolean>(false)
 
   const handleCityChange = (search: string) => {
     setCitySearchSuggestions([])
@@ -151,6 +159,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (debouncedCitySearch === '' || isCitySuggestionSelected) return
+    if (!isInitialCityDataFetched) {
+      setIsInitialCityDataFetched(true)
+      return
+    }
+    console.log('Fetching city suggestions:', debouncedCitySearch);
     fetchCityPredictions(debouncedCitySearch)
   }, [debouncedCitySearch])
 
@@ -368,13 +381,11 @@ function UserProfile() {
           </div>
 
           <div className='flex flex-col gap-4 lg:flex-row justify-between items-center'>
-            <p className='text-left w-full lg:w-min font-semibold'>City</p>
+            <p className='text-left w-full lg:w-min font-semibold city-row'>City</p>
             <div className="w-full relative flex gap-4 lg:w-52">
               <Command className='border border-input !border-b-0'>
-                <CommandInput value={city} onValueChange={handleCityChange} placeholder="Enter country..." className="h-9 " />
+                <CommandInput value={city} onValueChange={handleCityChange} placeholder="Enter city..." className="h-9 " />
                 <CommandList className='absolute top-9 z-50 w-full '>
-
-
                   {!isCitySuggestionSelected &&
                     <CommandGroup>
                       {

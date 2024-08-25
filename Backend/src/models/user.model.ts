@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-import jwt, {SignOptions} from 'jsonwebtoken'
+import jwt, { SignOptions } from 'jsonwebtoken'
 
-interface IUser{
+interface IUser {
     userName: string;
     email: string;
     password: string;
@@ -13,10 +13,11 @@ interface IUser{
     contactNumber: number;
     isUserAuthenticated: boolean;
     city: string;
+    country: string;
     preferences: string[];
     isPasswordCorrect(password: string): Promise<boolean>
     generateAccessToken(): Promise<string>
-    generateRefreshToken():Promise<string>
+    generateRefreshToken(): Promise<string>
 }
 const UserSchema = new mongoose.Schema<IUser>(
     {
@@ -58,11 +59,14 @@ const UserSchema = new mongoose.Schema<IUser>(
         contactNumber: {
             type: Number,
         },
-        isUserAuthenticated:{
+        isUserAuthenticated: {
             type: Boolean,
             default: false
         },
-        city:{
+        country: {
+            type: String,
+        },
+        city: {
             type: String,
         },
         preferences: {
@@ -120,8 +124,8 @@ UserSchema.methods.generateAccessToken = function () {
         process.env.ACCESS_TOKEN_SECRET as jwt.Secret,
         {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRY
-        } 
-    )   
+        }
+    )
 }
 
 UserSchema.methods.generateRefreshToken = function () {
@@ -132,7 +136,7 @@ UserSchema.methods.generateRefreshToken = function () {
         process.env.REFRESH_TOKEN_SECRET as jwt.Secret,
         {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRY
-        } 
+        }
     )
 }
 
