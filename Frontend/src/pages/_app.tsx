@@ -43,13 +43,19 @@ const josefinSans = Josefin_Sans({
 const lemon = Lemon({
   weight: '400',
   subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false,
   variable: '--font-lemon',
 });
 
 const montserrat = Montserrat({
   subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false,
   variable: '--font-montserrat',
 })
+
+console.log("montserrat", montserrat);
 
 
 Router.events.on('routeChangeStart', () => NProgress.start())
