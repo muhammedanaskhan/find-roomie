@@ -15,6 +15,7 @@ const ListingDetails = ({ listingDetails }: any) => {
     const avatar = listingDetails.user.avatar
     const userName = listingDetails.user.fullName
     const lookingFor = listingDetails.lookingFor
+    const currencySymbol = listingDetails.currencySymbol
     const rent = listingDetails.rent
     const location = listingDetails.location
     const gender = listingDetails.user.gender
@@ -103,7 +104,7 @@ const ListingDetails = ({ listingDetails }: any) => {
                             <div className=" flex w-full justify-start text-[14px] gap-4 text-gray-500">
                                 <div className="flex gap-2 text-[16px]">
                                     <span className="">Approx Rent: </span>
-                                    <span className="text-[16px] text-right font-medium">{rent}</span>
+                                    <span className="text-[16px] text-right font-medium">{`${currencySymbol}${rent}`}</span>
                                 </div>
                                 <div className="h-[25px] w-[1px] bg-gray-400"></div>
                                 <div className="flex gap-2 text-[16px]">
