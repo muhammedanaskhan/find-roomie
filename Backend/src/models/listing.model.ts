@@ -9,6 +9,7 @@ interface IListing {
         coordinates: [number, number];
     };
     lookingFor: 'Male' | 'Female' | 'Any';
+    currencySymbol: string;
     rent: number;
     occupancy: 'Single' | 'Shared' | 'Any';
     description: string;
@@ -31,7 +32,7 @@ const ListingSchema = new mongoose.Schema<IListing>(
         city: {
             type: String,
             required: true,
-            index: true  
+            index: true
         },
         geometry: {
             type: {
@@ -47,6 +48,10 @@ const ListingSchema = new mongoose.Schema<IListing>(
         lookingFor: {
             type: String,
             enum: ['Male', 'Female', 'Any'],
+            required: true
+        },
+        currencySymbol: {
+            type: String,
             required: true
         },
         rent: {

@@ -22,6 +22,7 @@ const Listings = ({ address, listings }: any) => {
                             userName={listing.user.fullName}
                             userAvatar={listing.user.avatar}
                             location={listing.location}
+                            currencySymbol={listing.currencySymbol}
                             rent={listing.rent}
                             lookingFor={listing.lookingFor}
                         />

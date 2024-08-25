@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 
 const ListingCard: React.FC<listingCardPropsType> = (
-    { userName, userAvatar, location, rent, lookingFor }
+    { userName, userAvatar, location, rent, lookingFor, currencySymbol }
 ) => {
 
     return (
@@ -28,7 +28,7 @@ const ListingCard: React.FC<listingCardPropsType> = (
                         </div>
                         <div className="flex flex-col gap-1">
                             <span className="text-[12px] text-gray-500">Rent</span>
-                            <h1 className="text-[14px] text-gray-600">{rent}</h1>
+                            <h1 className="text-[14px] text-gray-600">{`${currencySymbol}${rent}`}</h1>
                         </div>
                     </main>
                 </div>

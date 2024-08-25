@@ -12,6 +12,7 @@ const createListing = async (req: Request, res: Response) => {
         city,
         geometry,
         lookingFor,
+        currencySymbol,
         rent,
         occupancy,
         description,
@@ -77,6 +78,7 @@ const createListing = async (req: Request, res: Response) => {
             city,
             geometry: parsedGeometry,
             lookingFor,
+            currencySymbol,
             rent,
             occupancy,
             description,
@@ -177,7 +179,7 @@ const searchListings = async (searchTerm: string, maxDistanceInMeters: number, l
     } else {
         const cityQuery = searchTerm ? { city: { $regex: new RegExp(searchTerm, 'i') } } : {};
 
-        query = Listing.find(cityQuery).sort({ createdAt: -1 }).populate('user', 'avatar fullName').select('location lookingFor rent')
+        query = Listing.find(cityQuery).sort({ createdAt: -1 }).populate('user', 'avatar fullName').select('location lookingFor rent currencySymbol')
 
         const listings = await query.exec();
         return listings;

@@ -13,6 +13,7 @@ type userType = {
 type listingCardPropsType = {
     userName: string,
     userAvatar: string,
+    currencySymbol: string,
     location: string,
     rent: number,
     lookingFor: string,

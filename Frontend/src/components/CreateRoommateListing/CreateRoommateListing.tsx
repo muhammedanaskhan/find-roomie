@@ -38,12 +38,12 @@ import {
     CommandShortcut,
 } from "@/components/ui/command"
 import { set } from 'nprogress'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Skeleton } from '../ui/skeleton'
 import { useGetUserDataQuery } from '@/queries/profileQueries'
 import { useRouter } from 'next/router'
 import { FileUploader } from 'react-drag-drop-files'
-import { amenities } from '@/lib/constants'
+import { amenities, currencySymbols } from '@/lib/constants'
 
 const CreateRoommateListing = () => {
 
@@ -58,6 +58,7 @@ const CreateRoommateListing = () => {
     const [rent, setRent] = useState<number>(0)
     const [description, setDescription] = useState<string>('')
     const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
+    const [currencySymbol, setCurrencySymbol] = useState<string>('')
     const [isContactNumberPublic, setIsContactNumberPublic] = useState<string>('yes')
 
     const [locationSearchSuggestions, setLocationSearchSuggestions] = useState<string[]>([])
@@ -201,6 +202,7 @@ const CreateRoommateListing = () => {
         formData.append('city', city)
         formData.append('geometry', JSON.stringify({ type: 'Point', coordinates: [lng, lat] }))
         formData.append('lookingFor', lookingFor)
+        formData.append('currencySymbol', currencySymbol)
         formData.append('rent', rent.toString())
         formData.append('occupancy', occupancy)
         formData.append('description', description)
@@ -336,8 +338,27 @@ const CreateRoommateListing = () => {
 
                     <div className='flex gap-4 flex-col lg:flex-row lg:gap-0 justify-between items-center'>
                         <p className=' w-full lg:w-fit text-left font-semibold mb-0'>Rent</p>
-                        <div className='w-full flex gap-4 lg:w-52'>
-                            <Input type='number' placeholder="$" value={rent === 0 ? '' : rent} onChange={handleRentChange} />
+                        <div className="flex gap-[14px]">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button className='w-[90px]' variant="outline">{currencySymbol === '' ? "Currency" : currencySymbol}</Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-[90px] !ml-10 !left-0 max-h-52 overflow-auto">
+                                    <DropdownMenuRadioGroup value={currencySymbol} onValueChange={setCurrencySymbol}>
+                                        {
+                                            currencySymbols.map((currency) => {
+                                                return (
+                                                    <DropdownMenuRadioItem value={currency.symbol}>{currency.symbol}</DropdownMenuRadioItem>
+                                                )
+                                            })
+                                        }
+
+                                    </DropdownMenuRadioGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                            <div className='w-full flex gap-4 lg:w-[176px]]'>
+                                <Input type='number' placeholder="Approx rent" value={rent === 0 ? '' : rent} onChange={handleRentChange} />
+                            </div>
                         </div>
                     </div>
 
