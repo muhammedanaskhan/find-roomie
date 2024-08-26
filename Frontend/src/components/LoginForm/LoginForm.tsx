@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useLoginUserQuery } from "@/queries/profileQueries"
 
+import eyeOff from "@/assets/images/eyeOff.svg"
+import eyeOn from "@/assets/images/eyeOn.svg"
+
 import NProgress from "nprogress";
 import toast, { Toaster } from 'react-hot-toast';
 import { AxiosError } from "axios"
@@ -134,6 +137,12 @@ export function LoginForm() {
         console.log(values)
     }
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
+
     return (
         <>
             <Card className=" p-6 sm:p-10 lg:p-12">
@@ -160,19 +169,33 @@ export function LoginForm() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Paasword</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="johndoe67@gmail.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="relative">
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Paasword</FormLabel>
+                                        <FormControl>
+                                            <Input type={showPassword ? 'text' : 'password'} placeholder="Enter password..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute inset-y-[50px] right-2 flex items-center focus:outline-none"
+                            >
+                                {showPassword ? (
+                                    <Image src={eyeOn} alt="hide password" width={20} height={20} />
+                                ) : (
+                                    <Image src={eyeOff} alt="show password" width={20} height={20} />
+                                )}
+                            </button>
+                        </div>
+
 
                         <p>Don&apos;t have an account? <span><Link href='/register'>Register</Link></span></p>
                         <Button type="submit" className="w-full  hover:bg-primaryBlue bg-primaryBlue">Submit</Button>

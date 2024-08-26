@@ -3,6 +3,8 @@ import uploadOnCloudinary from "../utils/fileUpload";
 import { User } from "../models/user.model";
 import { Listing } from "../models/listing.model";
 import { stat } from "fs";
+import jwt, { JwtPayload, verify } from "jsonwebtoken";
+import { ApiError } from "../utils/ApiError";
 
 const createListing = async (req: Request, res: Response) => {
 
@@ -206,4 +208,33 @@ const getListingDetails = async (req: Request, res: Response) => {
     }
 }
 
-export { createListing, getListings, getListingDetails }
+const getUserListings = async (req: Request, res: Response) => {
+    const authHeader = req.headers['authorization']
+    let decoded: JwtPayload | undefined
+
+    if (authHeader) {
+        const accessToken = authHeader.split(' ')[1];
+
+        const secret = process.env.ACCESS_TOKEN_SECRET as jwt.Secret;
+        decoded = verify(accessToken, secret) as JwtPayload;
+    }
+
+    if (!decoded) {
+        throw new ApiError(403, "No token provided");
+    }
+
+    const user = await User.findById(decoded._id)
+
+    if (!user) throw new ApiError(404, "User not found")
+
+    const listings = await Listing.find({ user: user._id }).populate('user', 'avatar fullName').select('location lookingFor rent currencySymbol')
+
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            listings: listings
+        },
+    })
+}
+
+export { createListing, getListings, getListingDetails, getUserListings }

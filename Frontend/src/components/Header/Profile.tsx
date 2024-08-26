@@ -11,6 +11,7 @@ import {
     PlusCircle,
     Settings,
     User,
+    List,
     UserPlus,
     Users,
 } from "lucide-react"
@@ -46,7 +47,7 @@ export function Profile({ avatar, userName }: { avatar: string, userName: string
             <DropdownMenuTrigger asChild>
                 <Image src={avatar} width={32} height={32} alt='logo' className="rounded-full object-cover" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="fixed w-56 -right-11">
+            <DropdownMenuContent className="fixed w-56 -right-[17px]">
                 <DropdownMenuLabel>{`Hi ${userName}`}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
@@ -54,15 +55,18 @@ export function Profile({ avatar, userName }: { avatar: string, userName: string
                         <DropdownMenuItem>
                             <User className="mr-2 h-4 w-4" />
                             <span>Profile</span>
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
+                    <Link href={'/my-listings'}>
+                        <DropdownMenuItem>
+                            <List className="mr-2 h-4 w-4" />
+                            <span>My listings</span>
 
-
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
                 </DropdownMenuGroup>
@@ -101,7 +105,6 @@ export function Profile({ avatar, userName }: { avatar: string, userName: string
                 <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

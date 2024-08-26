@@ -73,7 +73,7 @@ export const useAuthenticateUserQuery = () => {
             if (!accessToken) {
                 throw new Error('Access token not found');
             }
-            
+
             const formData = new FormData();
             formData.append('gender', userData.gender);
             formData.append('country', userData.country);
@@ -120,6 +120,20 @@ export const useUpdateUserDataQuery = () => {
         mutationKey: ['update-user-data'],
         mutationFn: async (userData: updateUserData) => {
             const response = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/users/update-user-data`, userData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            return response.data
+        }
+    })
+}
+
+export const useGetMyListingasQuery = () => {
+    return useQuery({
+        queryKey: ['get-my-listings'],
+        queryFn: async () => {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listings/getUserListings`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }

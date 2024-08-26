@@ -257,9 +257,9 @@ export function RegisterForm() {
                             className="absolute inset-y-[50px] right-2 flex items-center focus:outline-none"
                         >
                             {showPassword ? (
-                                <Image src={eyeOff} alt="hide password" width={20} height={20} />
+                                <Image src={eyeOn} alt="hide password" width={20} height={20} />
                             ) : (
-                                <Image src={eyeOn} alt="show password" width={20} height={20} />
+                                <Image src={eyeOff} alt="show password" width={20} height={20} />
                             )}
                         </button>
                     </div>
