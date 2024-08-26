@@ -16,7 +16,7 @@ const Listings = ({ address, listings }: any) => {
         <div className='font-montserrat mt-6'>
             {listings?.length > 0 && listings.map((listing: any) => {
                 return (
-                    <Link href={`/listing/${listing._id}`}>
+                    <Link href={`/listing/${listing._id}`} key={listing._id}>
                         <ListingCard
                             key={listing._id}
                             userName={listing.user.fullName}

@@ -75,9 +75,9 @@ const ListingDetails = ({ listingDetails }: any) => {
                         </div>
                         <div className="flex flex-wrap w-full justify-center gap-4 mt-3">
                             {
-                                userPreferences.map((preference: any) => {
+                                userPreferences.map((preference: any, index: number) => {
                                     return (
-                                        <div className="flex justify-start ">
+                                        <div className="flex justify-start" key={index}>
                                             <div className="text-[12px] text-gray-500 border rounded-full px-4 py-1">
                                                 {preference}
                                             </div>
@@ -133,9 +133,9 @@ const ListingDetails = ({ listingDetails }: any) => {
                             scrollbar={{ draggable: true }}
                         >
                             {
-                                photos.map((photo: any) => {
+                                photos.map((photo: any, index: any) => {
                                     return (
-                                        <SwiperSlide>
+                                        <SwiperSlide key={index}>
                                             <Image src={photo} alt='room' width={400} height={400} className='left-0 right-0 m-auto select-none' />
                                         </SwiperSlide>
                                     )
@@ -156,9 +156,9 @@ const ListingDetails = ({ listingDetails }: any) => {
                             scrollbar={{ draggable: true }}
                         >
                             {
-                                photos.map((photo: any) => {
+                                photos.map((photo: any, index: number) => {
                                     return (
-                                        <SwiperSlide>
+                                        <SwiperSlide key={index}>
                                             <Image src={photo} alt='room' width={400} height={400} className='left-0 right-0 m-auto select-none' />
                                         </SwiperSlide>
                                     )
@@ -199,7 +199,7 @@ const ListingDetails = ({ listingDetails }: any) => {
 
             </Card>
         </div>
-    ) 
- }
+    )
+}
 
 export default ListingDetails

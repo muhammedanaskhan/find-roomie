@@ -346,9 +346,9 @@ const CreateRoommateListing = () => {
                                 <DropdownMenuContent className="w-[90px] !ml-10 !left-0 max-h-52 overflow-auto">
                                     <DropdownMenuRadioGroup value={currencySymbol} onValueChange={setCurrencySymbol}>
                                         {
-                                            currencySymbols.map((currency) => {
+                                            currencySymbols.map((currency, index) => {
                                                 return (
-                                                    <DropdownMenuRadioItem value={currency.symbol}>{currency.symbol}</DropdownMenuRadioItem>
+                                                    <DropdownMenuRadioItem key={index} value={currency.symbol}>{currency.symbol}</DropdownMenuRadioItem>
                                                 )
                                             })
                                         }
