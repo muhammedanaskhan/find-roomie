@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Card } from '../ui/card'
 import Image from 'next/image'
 import locationIcon from '@/assets/images/location-pin.svg'
@@ -42,6 +42,15 @@ const ListingDetails = ({ listingDetails }: any) => {
         return null;
     }).filter(Boolean);
 
+    const swiperRefLocal = useRef<any>()
+
+    const handleMouseSwiperEnter = () => {
+        swiperRefLocal.current.swiper.autoplay.stop()
+    }
+
+    const handleMouseSwiperLeave = () => {
+        swiperRefLocal.current.swiper.autoplay.start()
+    }
 
     return (
         <div className='sm:w-3/4 px-4 pt-8 font-montserrat'>
@@ -119,8 +128,11 @@ const ListingDetails = ({ listingDetails }: any) => {
 
                 <section className=" photos-section px-5 w-full flex flex-col gap-2 items-center justify-center">
                     <span className="text-[20px] w-full text-left font-medium">Photos </span>
-                    <div className=" px-5 hidden lg:flex lg:w-[700px]">
+                    <div
+                        onMouseEnter={handleMouseSwiperEnter} onMouseLeave={handleMouseSwiperLeave}
+                        className=" px-5 hidden lg:flex lg:w-[700px]">
                         <Swiper
+                            ref={swiperRefLocal}
                             modules={[Navigation, Autoplay]}
                             spaceBetween={50}
                             slidesPerView={1}
@@ -151,6 +163,7 @@ const ListingDetails = ({ listingDetails }: any) => {
                             autoplay={{
                                 delay: 2500,
                                 disableOnInteraction: false,
+                                pauseOnMouseEnter: true,
                             }}
                             pagination={{ clickable: true }}
                             scrollbar={{ draggable: true }}
