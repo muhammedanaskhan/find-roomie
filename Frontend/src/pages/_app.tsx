@@ -6,7 +6,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import Nav from '@/components/Nav/Nav';
 
-import Router from 'next/router';
+import useRouter from 'next/router';
 
 import {
   QueryClient,
@@ -18,11 +18,13 @@ import Header from '@/components/Header';
 import NProgress from "nprogress";
 import '../styles/nprogress.css';
 
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { store } from '@/Redux/store';
 import { useEffect, useState } from 'react';
 import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
 import axios from 'axios';
+import { useGetUserDataQuery } from '@/queries/profileQueries';
+import { setAuth } from '@/Redux/authSlice';
 
 const barlowCondensed = Barlow_Condensed({
   weight: '700',
@@ -55,48 +57,59 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 })
 
-console.log("montserrat", montserrat);
+const router = useRouter;
 
-
-Router.events.on('routeChangeStart', () => NProgress.start())
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
+router.events.on('routeChangeStart', () => NProgress.start())
+router.events.on('routeChangeComplete', () => NProgress.done())
+router.events.on('routeChangeError', () => NProgress.done())
 
 export default function App({ Component, pageProps }: AppProps) {
 
   const queryClient = new QueryClient()
+  useCheckAccessTokenExpiryAndUpdate();
 
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
+  return (
+    <Provider store={store}>
+      <ChakraProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppContent Component={Component} pageProps={pageProps} />
+        </QueryClientProvider>
+      </ChakraProvider>
+    </Provider>
+  );
+}
+
+function AppContent({ Component, pageProps }: any) {
+
+  const dispatch = useDispatch();
+
+  const { mutateAsync: getUser } = useGetUserDataQuery();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
-      setIsUserAuthenticated(false);
+      return;
     } else {
-      setIsUserAuthenticated(true);
+
+      const fetchGetUser = async () => {
+        const result = await getUser();
+        console.log("result", result)
+        dispatch(setAuth({
+          userName: result.data.fullName,
+          email: result.data.email,
+          accessToken: accessToken,
+          isUserAuthenticated: true,
+          avatar: result.data.avatar
+        }))
+      }
+      fetchGetUser()
     }
   }, []);
 
-  console.log("userData", userData);
-
-  useCheckAccessTokenExpiryAndUpdate();
-
-
   return (
-    <Provider store={store}>
-      <main
-        className={`${inter.variable} ${montserrat.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen`}
-      >
-        <ChakraProvider>
-          <QueryClientProvider client={queryClient}>
-            {/* <Nav /> */}
-            {/* <Header /> */}
-            <Component {...pageProps} />
-          </QueryClientProvider>
-        </ChakraProvider>
-      </main>
-    </Provider>
-
-  );
+    <main
+      className={`${inter.variable} ${montserrat.variable} ${barlowCondensed.variable} ${josefinSans.variable} ${lemon.variable} ${GeistMono.variable} ${GeistSans.variable} flex flex-col h-screen`}>
+      <Component {...pageProps} />
+    </main>
+  )
 }

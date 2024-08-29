@@ -5,12 +5,16 @@ export interface AuthState {
   userName: string,
   email: string,
   accessToken: string,
+  isUserAuthenticated?: boolean,
+  avatar?: string
 }
 
 const initialState: AuthState = {
   userName: '',
   email: '',
   accessToken: '',
+  isUserAuthenticated: false,
+  avatar: ''
 }
 
 export const authSlice = createSlice({
@@ -19,8 +23,10 @@ export const authSlice = createSlice({
   reducers: {
     setAuth: (state, action: PayloadAction<AuthState>) => {
       state.userName = action.payload.userName,
-      state.email = action.payload.email,
-      state.accessToken = action.payload.accessToken
+        state.email = action.payload.email,
+        state.accessToken = action.payload.accessToken,
+        state.isUserAuthenticated = action.payload.isUserAuthenticated,
+        state.avatar = action.payload.avatar
     },
   }
 })

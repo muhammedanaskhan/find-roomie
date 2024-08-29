@@ -41,7 +41,7 @@ import { get } from "http";
 import { set } from "nprogress";
 
 
-const Header: React.FunctionComponent = () => {
+const Header: React.FunctionComponent<any> = ({ userName, email, avatar, isUserAuthenticated }) => {
 
   // const user ={
   //   displayName: "Test User",
@@ -49,30 +49,7 @@ const Header: React.FunctionComponent = () => {
 
   // };
 
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
-
-  const [avatar, setAvatar] = useState('');
-  const [username, setUsername] = useState('');
-
-  const { mutateAsync: getUser } = useGetUserDataQuery();
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      setIsUserAuthenticated(false);
-    } else {
-      setIsUserAuthenticated(true);
-
-      const fetchGetUser = async () => {
-        const result = await getUser();
-
-        setAvatar(result.data.avatar);
-        setUsername(result.data.fullName);
-      }
-      fetchGetUser()
-    }
-  }, []);
 
   console.log("userData", userData);
 
@@ -140,7 +117,7 @@ const Header: React.FunctionComponent = () => {
             </Link>
 
             {isUserAuthenticated && <div className="md:hidden gap-2 mr-2">
-              <Profile avatar={avatar} userName={username} />
+              <Profile avatar={avatar} userName={userName} />
             </div>}
             {/* <ColorModeSwitcher /> */}
             <Box display={{ md: "none", lg: "none" }}>
@@ -176,7 +153,7 @@ const Header: React.FunctionComponent = () => {
               ) : (
                 <>
                   <div className="hidden md:flex gap-2">
-                    <Profile avatar={avatar} userName={username} />
+                    <Profile avatar={avatar} userName={userName} />
                   </div>
                 </>
               )}
@@ -189,7 +166,7 @@ const Header: React.FunctionComponent = () => {
           setOpen={handleToggle}
           isUserAuthenticated={isUserAuthenticated}
           avatar={avatar}
-          userName={username} />
+          userName={userName} />
       </Box>
     </React.Fragment>
   );
