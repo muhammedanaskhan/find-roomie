@@ -7,7 +7,8 @@ const app = express();
 
 // define some middlewares
 
-const allowedOrigins = process.env.CORS_ORIGIN?.split(',');
+const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(origin => origin.trim());
+console.log('Allowed origins:', allowedOrigins);
 app.use(cors({
     origin: allowedOrigins,
     credentials: true
