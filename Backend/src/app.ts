@@ -9,7 +9,8 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://www.findroomie.co"
+    "https://www.findroomie.co",
+    "https://findroomie.co"
 ]
 
 const corsOptions = {
@@ -19,7 +20,8 @@ const corsOptions = {
         } else {
             callback(new Error('Not allowed by CORS'))
         }
-    }
+    },
+    credentials: true
 }
 
 app.use(cors(corsOptions));
