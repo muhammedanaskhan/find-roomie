@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { useLoginUserQuery } from "@/queries/profileQueries"
+import { useGetUserDataQuery, useLoginUserQuery } from "@/queries/profileQueries"
 
 import eyeOff from "@/assets/images/eyeOff.svg"
 import eyeOn from "@/assets/images/eyeOn.svg"
@@ -73,6 +73,8 @@ export function LoginForm() {
 
     const router = useRouter()
 
+    const { mutateAsync: getUser } = useGetUserDataQuery();
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             NProgress.start();
@@ -87,6 +89,19 @@ export function LoginForm() {
             }
 
             console.log(result)
+
+            if (result.data.accessToken) {
+                localStorage.setItem('accessToken', result.data.accessToken);
+
+                const userDetails = await getUser();
+                dispatch(setAuth({
+                    userName: userDetails.data.fullName,
+                    email: userDetails.data.email,
+                    accessToken: result.accessToken,
+                    isUserAuthenticated: true,
+                    avatar: userDetails.data.avatar
+                }));
+            }
 
             NProgress.done();
             toast.success(`You're logged in`)

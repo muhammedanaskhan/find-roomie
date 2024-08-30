@@ -18,8 +18,8 @@ import Header from '@/components/Header';
 import NProgress from "nprogress";
 import '../styles/nprogress.css';
 
-import { Provider, useDispatch } from 'react-redux';
-import { store } from '@/Redux/store';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { RootState, store } from '@/Redux/store';
 import { useEffect, useState } from 'react';
 import useCheckAccessTokenExpiryAndUpdate from '@/hooks/useCheckAccessTokenExpiryAndUpdate';
 import axios from 'axios';
@@ -85,7 +85,14 @@ function AppContent({ Component, pageProps }: any) {
 
   const { mutateAsync: getUser } = useGetUserDataQuery();
 
+  const { userName, email, avatar, isUserAuthenticated } = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
+
+    if (isUserAuthenticated) {
+      return; // Skip fetching if user is already authenticated
+    }
+
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       return;

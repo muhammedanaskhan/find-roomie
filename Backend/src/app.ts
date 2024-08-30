@@ -7,12 +7,23 @@ const app = express();
 
 // define some middlewares
 
-const allowedOrigins = ["http://localhost:3000", "https://www.findroomie.co"]
+const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(origin => origin.trim());
+console.log('Allowed origins:', allowedOrigins);
 
 app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins?.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.options('*', cors());
 
 app.use(express.json({
     limit: '50mb'
