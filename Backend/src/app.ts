@@ -7,8 +7,8 @@ const app = express();
 
 // define some middlewares
 
-const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(origin => origin.trim());
-console.log('Allowed origins:', allowedOrigins);
+const allowedOrigins = ["http://localhost:3000", "https://www.findroomie.co"]
+
 app.use(cors({
     origin: allowedOrigins,
     credentials: true
