@@ -7,6 +7,7 @@
 /Frontend/.yarn/install-state.gz
 
 /Backend/node_modules
+/Backend/dist/
 /Backend/.pnp
 /Backend/.pnp.js
 /Backend/.yarn/install-state.gz

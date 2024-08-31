@@ -1,0 +1,37 @@
+FROM node:18-alpine as builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+# build production image
+
+FROM node:18-alpine as runner
+
+WORKDIR /app
+
+COPY package*.json ./
+
+ENV NODE_ENV=production
+
+RUN npm ci
+
+COPY --from=builder /app/dist ./dist
+
+RUN chown -R node:node /app && chmod -R 755 /app
+
+RUN npm install -g pm2
+
+COPY ecosystem.config.js .
+
+USER node
+
+EXPOSE 5513
+
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
