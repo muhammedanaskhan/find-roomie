@@ -51,9 +51,6 @@ const Header: React.FunctionComponent<any> = ({ userName, email, avatar, isUserA
 
   const [userData, setUserData] = useState(null);
 
-  console.log("userData", userData);
-
-
   const user = null;
 
   const [isOpen, setOpen] = useState(false);

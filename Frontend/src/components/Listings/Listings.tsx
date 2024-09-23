@@ -4,8 +4,6 @@ import Link from 'next/link'
 
 const Listings = ({ address, listings }: any) => {
 
-    console.log("Listingssssssss", listings)
-
     const [fetchedListings, setFetchedListings] = React.useState(listings)
 
     React.useEffect(() => {

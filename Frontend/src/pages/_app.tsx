@@ -100,7 +100,6 @@ function AppContent({ Component, pageProps }: any) {
 
       const fetchGetUser = async () => {
         const result = await getUser();
-        console.log("result", result)
         dispatch(setAuth({
           userName: result.data.fullName,
           email: result.data.email,

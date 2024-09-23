@@ -89,7 +89,6 @@ export function LoginForm() {
             }
 
             console.log(result)
-
             if (result.data.accessToken) {
                 localStorage.setItem('accessToken', result.data.accessToken);
 
@@ -97,47 +96,31 @@ export function LoginForm() {
                 dispatch(setAuth({
                     userName: userDetails.data.fullName,
                     email: userDetails.data.email,
-                    accessToken: result.accessToken,
+                    accessToken: result.data.accessToken,
                     isUserAuthenticated: true,
                     avatar: userDetails.data.avatar
                 }));
+
+                // Wait until the state is updated before navigating
+                await new Promise((resolve) => setTimeout(resolve, 100)); // Short delay to ensure state is propagated
+
+                NProgress.done();
+                toast.success(`You're logged in`);
+
+                const responseIsUserAuthenticated = result.data.isUserAuthenticated;
+                if (!responseIsUserAuthenticated) {
+                    localStorage.setItem('isUserAuthenticated', 'false');
+                    router.push('/login/personal-details');
+                } else {
+                    router.push('/');
+                }
+
+                const responseAccessToken = result.data.accessToken;
+                const decodedToken = jwtDecode<{ exp: number }>(responseAccessToken);
+                const accessTokenExpiry = decodedToken.exp;
+                const accessTokenExpiryTime = new Date(accessTokenExpiry * 1000);
+                localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
             }
-
-            NProgress.done();
-            toast.success(`You're logged in`)
-
-            const responseIsUserAuthenticated = result.data.isUserAuthenticated;
-
-            if (!responseIsUserAuthenticated) {
-                localStorage.setItem('isUserAuthenticated', 'false');
-                router.push('/login/personal-details');
-            } else {
-                router.push('/');
-            }
-
-
-            const responseUserName = result.data.userName;
-            const responseEmail = result.data.email;
-            const responseAccessToken = result.data.accessToken;
-
-            const decodedToken = jwtDecode<{ exp: number }>(responseAccessToken);
-            const accessTokenExpiry = decodedToken.exp;
-
-            const accessTokenExpiryTime = new Date(accessTokenExpiry * 1000);
-            console.log(accessTokenExpiryTime)
-
-            localStorage.setItem('accessToken', responseAccessToken);
-            localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
-
-            dispatch(
-                setAuth(
-                    {
-                        userName: responseUserName,
-                        email: responseEmail,
-                        accessToken: responseAccessToken
-                    }
-                )
-            )
 
         } catch (error) {
             NProgress.done();

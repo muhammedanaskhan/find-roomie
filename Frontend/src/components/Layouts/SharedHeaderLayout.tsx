@@ -6,8 +6,6 @@ export default function SharedHeaderLayout({ children }: any) {
 
     const { userName, email, avatar, isUserAuthenticated } = useSelector((state: RootState) => state.auth);
 
-    console.log("userName", userName)
-
     return (
         <div>
             <Header

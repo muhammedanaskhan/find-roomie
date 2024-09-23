@@ -10,8 +10,6 @@ const Page = ({ data }: any) => {
     const router = useRouter()
     const cityName = router.query
 
-    console.log(data.listings)
-
     return (
         <SharedHeaderLayout>
             <ListingSearchAreaLayout>

@@ -12,7 +12,6 @@ interface Params extends ParsedUrlQuery {
 
 const index: React.FunctionComponent = ({ data }: any) => {
 
-    console.log("Listing Details", data)
     return (
         <SharedHeaderLayout>
             <section className='h-full pt-16 flex justify-center items-center top-2/4'>

@@ -75,12 +75,10 @@ function PersonalDetails() {
 
   const fetchCountryPredictions = async (search: string) => {
 
-    console.log('Fetching country suggestions:', search);
     const username = process.env.NEXT_PUBLIC_GEONAMES_USERNAME
     try {
       const response = await fetch(`http://api.geonames.org/searchJSON?q=${search}&maxRows=10&featureClass=A&featureCode=PCLI&username=${username}`)
       const data = await response.json()
-      console.log('Country suggestions:', data);
       const suggestions = data.geonames
 
       setCountrySearchSuggestions(suggestions

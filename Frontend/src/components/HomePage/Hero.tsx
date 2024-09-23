@@ -69,10 +69,7 @@ function Hero() {
     const geoCodedDataResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedLocation}&key=${googleMapsAPIKey}`)
     const geoData = await geoCodedDataResponse.json()
 
-    console.log("geoData", geoData.results[0])
-
     const city = geoData.results[0].address_components.find((component: any) => component.types.includes('locality'))?.long_name
-    console.log("city", city)
   }
 
 

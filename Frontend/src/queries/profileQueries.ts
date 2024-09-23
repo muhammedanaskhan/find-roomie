@@ -98,7 +98,6 @@ export const useAuthenticateUserQuery = () => {
 }
 
 export const useGetUserDataQuery = () => {
-    console.log('useGetUserDataQuery')
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['get-user-data'],
@@ -114,7 +113,6 @@ export const useGetUserDataQuery = () => {
 }
 
 export const useUpdateUserDataQuery = () => {
-    console.log('useUpdateUserDataQuery')
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['update-user-data'],

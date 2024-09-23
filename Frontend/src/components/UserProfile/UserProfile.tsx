@@ -53,7 +53,6 @@ function UserProfile() {
           setIsInitialCityDataFetched(false)
           setPreferences(result.data.preferences)
 
-          console.log('User data:', result.data);
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
@@ -181,7 +180,6 @@ function UserProfile() {
 
       }
       const data = await response.json()
-      console.log('City suggestions:', data);
       const suggestions = data.geonames
 
       setCitySearchSuggestions(suggestions
@@ -221,7 +219,6 @@ function UserProfile() {
 
   const handleSelectCity = (value: string) => {
     setCity(value)
-    console.log('City:', value);
   }
 
   const allPreferences: Array<string> = [
