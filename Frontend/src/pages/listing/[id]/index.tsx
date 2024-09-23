@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import SharedHeaderLayout from '@/components/Layouts/SharedHeaderLayout';
 import ListingDetails from '@/components/Listings/ListingDetails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { GetServerSidePropsContext } from 'next';
@@ -13,15 +14,11 @@ const index: React.FunctionComponent = ({ data }: any) => {
 
     console.log("Listing Details", data)
     return (
-        <div>
-            <Header />
-            <ProtectedRoute>
-                <section className='h-full pt-16 flex justify-center items-center top-2/4'>
-                    <ListingDetails listingDetails={data.data.listing} />
-                </section>
-
-            </ProtectedRoute>
-        </div>
+        <SharedHeaderLayout>
+            <section className='h-full pt-16 flex justify-center items-center top-2/4'>
+                <ListingDetails listingDetails={data.data.listing} />
+            </section>
+        </SharedHeaderLayout>
     )
 }
 
