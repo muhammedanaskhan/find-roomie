@@ -9,7 +9,7 @@ const ListingCard: React.FC<listingCardPropsType> = (
 
     const distance = distanceInKm?.toFixed(1)
     return (
-        <div className='group listingCard rounded-[16px] border max-w-[482px]  border-gray-200 px-5 py-3 transition-all duration-300 ease-in-out hover:shadow-lg overflow-hidden relative'>
+        <div className='group listingCard rounded-[16px] border w-full md:max-w-[482px]  border-gray-200 px-5 py-3 transition-all duration-300 ease-in-out hover:shadow-lg overflow-hidden relative'>
             <div className="flex gap-[24px] justify-center items-center transition-all duration-300 ease-in-out transform group-hover:pb-5">
                 <Image
                     src={userAvatar}

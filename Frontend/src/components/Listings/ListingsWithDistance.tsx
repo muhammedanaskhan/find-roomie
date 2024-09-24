@@ -10,10 +10,10 @@ const ListingsWithDistance = ({ address, listings }: any) => {
         setFetchedListings(listings)
     }, [listings])
     return (
-        <div className='font-montserrat mt-6'>
+        <div className='font-montserrat mt-6 flex flex-wrap gap-6 justify-between items-center'>
             {listings?.length > 0 && listings.map((listing: any, index: any) => {
                 return (
-                    <Link href={`/listing/${listing._id}`} key={index}>
+                    <Link href={`/listing/${listing._id}`} key={index} className='flex-grow-1 w-full md:w-fit'>
                         <ListingCardWithDistance
                             key={listing._id}
                             userName={listing.user.fullName}
