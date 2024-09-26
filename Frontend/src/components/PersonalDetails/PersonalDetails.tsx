@@ -22,12 +22,13 @@ import Image from 'next/image'
 import toast, { Toaster } from 'react-hot-toast'
 import NProgress from "nprogress";
 
-import { useAuthenticateUserQuery } from '@/queries/profileQueries'
+import { useAuthenticateUserQuery, useGetUserDataQuery } from '@/queries/profileQueries'
 import { Router, useRouter } from 'next/router'
 import Link from 'next/link'
 import { useDebounce } from '@/hooks/useDebounce'
 import { Skeleton } from '../ui/skeleton'
-
+import { setAuth } from '@/Redux/authSlice';
+import { useDispatch } from 'react-redux'
 
 
 function PersonalDetails() {
@@ -261,16 +262,38 @@ function PersonalDetails() {
           }
         )
 
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Short delay to ensure state is propagated
+
         NProgress.done();
         toast.success(`Your details are saved!`)
         if (result.statusCode === 200) {
           localStorage.setItem('isUserAuthenticated', "true")
-          router.push('/')
+          // router.push('/')
+          fetchGetUser(localStorage.getItem('accessToken'))
         }
       } catch (error) {
 
       }
     }
+  }
+
+  const dispatch = useDispatch();
+
+  const { mutateAsync: getUser } = useGetUserDataQuery();
+
+  const fetchGetUser = async (accessToken: any) => {
+    const result = await getUser();
+    dispatch(setAuth({
+      userName: result.data.fullName,
+      email: result.data.email,
+      accessToken: accessToken,
+      isUserAuthenticated: true,
+      avatar: result.data.avatar
+    }))
+
+    await new Promise((resolve) => setTimeout(resolve, 100)); // Short delay to ensure state is propagated
+
+    router.push('/')
   }
 
   return (

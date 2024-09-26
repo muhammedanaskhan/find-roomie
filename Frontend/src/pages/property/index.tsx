@@ -12,6 +12,8 @@ const Property = ({ data }: any) => {
 
     const listings = data.data.listings;
 
+    console.log("listings", listings)
+
     return (
         <SharedHeaderLayout>
             <ListingSearchAreaLayout>
