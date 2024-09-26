@@ -78,9 +78,9 @@ const ListingDetails = ({ listingDetails }: any) => {
                                 </span>
                             </div>
 
-                            <span className=" text-gray-500">
+                            <a className=" text-gray-500" href={`mailto:${email}`}>
                                 {`Mail: ${email}`}
-                            </span>
+                            </a>
                         </div>
                         <div className="flex flex-wrap w-full justify-center gap-4 mt-3">
                             {
