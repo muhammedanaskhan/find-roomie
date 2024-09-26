@@ -23,8 +23,11 @@ import {
 import { useDebounce } from '@/hooks/useDebounce'
 import { Loader } from '@googlemaps/js-api-loader';
 import { Skeleton } from '../ui/skeleton'
+import { useRouter } from 'next/router'
 
 function Hero() {
+
+  const router = useRouter()
 
   const googleMapsAPIKey = process.env.NEXT_PUBLIC_GOOGLEMAPS_API_KEY as string
 
@@ -72,6 +75,18 @@ function Hero() {
     const city = geoData.results[0].address_components.find((component: any) => component.types.includes('locality'))?.long_name
   }
 
+  const handleSearch = async () => {  //on search btn click
+    //fetch coordinates for selected location
+    const encodedLocation = encodeURIComponent(location)
+    const geoCodedDataResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedLocation}&key=${googleMapsAPIKey}`)
+    const geoData = await geoCodedDataResponse.json()
+    const city = geoData.results[0].address_components.find((component: any) => component.types.includes('locality'))?.long_name
+    const fetchedCoordinates = geoData.results[0].geometry.location
+    const lat = fetchedCoordinates.lat;
+    const lng = fetchedCoordinates.lng;
+
+    router.push(`/property?address=${encodeURIComponent(location)}&lat=${lat}&lng=${lng}&gender=all`)
+  }
 
   const handleSelectSuggestion = (suggestion: string) => {
     setIsSuggestionSelected(true)
@@ -151,7 +166,10 @@ function Hero() {
 
 
             </div>
-            <Button className='w-full md:w-10 px-12 hover:bg-primaryBlue hover:scale-105 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow' type="submit">Search</Button>
+            <Button
+              onClick={handleSearch}
+              className='w-full md:w-10 px-12 hover:bg-primaryBlue hover:scale-105 bg-primaryBlue shadow-xl shadow-blueSpreadedShadow'
+              type="submit">Search</Button>
 
 
           </div>
