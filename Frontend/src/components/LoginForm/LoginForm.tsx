@@ -141,6 +141,10 @@ export function LoginForm() {
         setShowPassword(!showPassword)
     }
 
+    const handleGoogleLogin = () => {
+        window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/users/google`; // Correct route
+    };
+
     return (
         <>
             <Card className=" p-6 sm:p-10 lg:p-12">
@@ -200,6 +204,7 @@ export function LoginForm() {
                     </form>
                 </Form>
                 {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
+                <button className="" onClick={handleGoogleLogin}></button>
             </Card>
 
         </>

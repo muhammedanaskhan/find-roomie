@@ -8,6 +8,89 @@ import { AsyncHandler } from '../utils/AyncHandler'
 import uploadOnCloudinary from '../utils/fileUpload'
 import jwt, { JwtPayload, verify } from 'jsonwebtoken'
 
+
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+
+export const googleLogin = (req, res) => {
+    const redirectUri = `${process.env.BACKEND_URL}/api/auth/google/callback`;
+    const authUrl = client.generateAuthUrl({
+        access_type: 'offline',
+        scope: ['profile', 'email'],
+        redirect_uri: redirectUri,
+    });
+    res.redirect(authUrl);
+};
+
+
+export const googleCallback = async (req, res) => {
+    try {
+        const { code } = req.query;
+        const redirectUri = `${process.env.BACKEND_URL}/api/auth/google/callback`;
+
+        // Get tokens from Google
+        const { tokens } = await client.getToken({
+            code,
+            redirect_uri: redirectUri,
+        });
+
+        // Verify the token and get user's Google profile
+        const ticket = await client.verifyIdToken({
+            idToken: tokens.id_token || '',
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+
+        if (!payload) {
+            throw new Error('Failed to get token payload');
+        }
+
+        const { name, email, picture } = payload;
+
+        // Check if user already exists
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            user = await User.create({
+                userName: email?.split('@')[0],
+                fullName: name,
+                email,
+                avatar: picture,
+                password: '',
+            });
+        }
+
+        // Generate JWT access and refresh tokens
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id.toString());
+
+        const options = {
+            httpOnly: true,
+            secure: true,
+        };
+
+        // Send tokens and user information in response
+        res
+            .status(200)
+            .cookie('accessToken', accessToken, options)
+            .cookie('refreshToken', refreshToken, options)
+            .json({
+                accessToken,
+                refreshToken,
+                user: {
+                    userName: user.userName,
+                    fullName: user.fullName,
+                    email: user.email,
+                    avatar: user.avatar,
+                },
+                message: 'Google login successful',
+            });
+    } catch (error) {
+        return res.status(500).json({ error: "Google Login failed" });
+    }
+};
+
 const generateAccessAndRefreshToken = async (userId: string) => {
     try {
         const user: any = await User.findById(userId)
@@ -262,7 +345,7 @@ const getUserData = AsyncHandler(async (req, res) => {
 
 })
 
-const updateUserData = AsyncHandler(async(req, res) => {
+const updateUserData = AsyncHandler(async (req, res) => {
     const { fullName, gender, city, preferences } = req.body
     console.log("req.body", req.body)
 
@@ -287,23 +370,23 @@ const updateUserData = AsyncHandler(async(req, res) => {
 
     const initialFullName = user.fullName
     console.log("initialFullName", initialFullName, "fullname", fullName)
-    if(initialFullName !== fullName){
+    if (initialFullName !== fullName) {
         user.fullName = fullName
     }
 
     const initialGender = user.gender
     console.log("initialGender", initialGender, "gender", gender)
-    if(initialGender !== gender){
+    if (initialGender !== gender) {
         user.gender = gender
     }
 
     const initialCity = user.city
-    if(initialCity !== city){
+    if (initialCity !== city) {
         user.city = city
     }
 
     const initialPreferences = user.preferences
-    if(initialPreferences !== preferences){
+    if (initialPreferences !== preferences) {
         user.preferences = preferences
     }
 
