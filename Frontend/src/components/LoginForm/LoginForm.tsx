@@ -142,7 +142,7 @@ export function LoginForm() {
     }
 
     const handleGoogleLogin = () => {
-        window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/users/google`; // Correct route
+        window.location.href = `https://find-roomie.onrender.com/api/v1/users/google`; // Correct route
     };
 
     return (
@@ -204,7 +204,7 @@ export function LoginForm() {
                     </form>
                 </Form>
                 {/* <button className="btn" onClick={getAccessToken}>generate access token</button> */}
-                <button className="" onClick={handleGoogleLogin}></button>
+                <button className="" onClick={handleGoogleLogin}>google login</button>
             </Card>
 
         </>
