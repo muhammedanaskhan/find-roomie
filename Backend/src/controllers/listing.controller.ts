@@ -1,12 +1,12 @@
 import { Express, Request, Response } from "express";
+import { Multer } from 'multer';
+
 import uploadOnCloudinary from "../utils/fileUpload";
 import { User } from "../models/user.model";
 import { Listing } from "../models/listing.model";
 import { stat } from "fs";
 import jwt, { JwtPayload, verify } from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError";
-
-import { Multer } from 'multer';
 
 const createListing = async (req: Request, res: Response) => {
 

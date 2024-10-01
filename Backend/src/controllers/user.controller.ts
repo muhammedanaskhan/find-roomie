@@ -1,3 +1,6 @@
+import { Express, Request, Response } from "express";
+import { Multer } from 'multer';
+
 import { User } from '../models/user.model'
 import { ApiError } from '../utils/ApiError'
 import { ApiResponse } from '../utils/ApiResponse'

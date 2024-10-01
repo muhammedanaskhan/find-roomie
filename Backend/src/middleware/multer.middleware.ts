@@ -1,5 +1,7 @@
 import multer from 'multer';
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { Express, Request, Response, NextFunction, RequestHandler } from 'express';
+import { Multer } from 'multer';
+
 import fs from 'fs'
 
 const storage = multer.diskStorage({
