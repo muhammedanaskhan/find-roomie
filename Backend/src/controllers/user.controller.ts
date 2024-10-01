@@ -75,17 +75,6 @@ export const googleCallback = async (req, res) => {
             .status(200)
             .cookie('accessToken', accessToken, options)
             .cookie('refreshToken', refreshToken, options)
-            .json({
-                accessToken,
-                refreshToken,
-                user: {
-                    userName: user.userName,
-                    fullName: user.fullName,
-                    email: user.email,
-                    avatar: user.avatar,
-                },
-                message: 'Google login successful',
-            })
             .redirect(`${process.env.FRONTEND_URL_PROD}/auth/google-success`);
     } catch (error) {
         return res.status(500).json({ error: "Google Login failed" });
