@@ -14,7 +14,7 @@ import { OAuth2Client } from 'google-auth-library';
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
 export const googleLogin = (req, res) => {
-    const redirectUri = `${process.env.BACKEND_URL}/api/auth/google/callback`;
+    const redirectUri = `${process.env.BACKEND_URL_PROD}/api/auth/google/callback`;
     const authUrl = client.generateAuthUrl({
         access_type: 'offline',
         scope: ['profile', 'email'],
@@ -27,7 +27,7 @@ export const googleLogin = (req, res) => {
 export const googleCallback = async (req, res) => {
     try {
         const { code } = req.query;
-        const redirectUri = `${process.env.BACKEND_URL}/api/auth/google/callback`;
+        const redirectUri = `${process.env.BACKEND_URL_PROD}/api/auth/google/callback`;
 
         // Get tokens from Google
         const { tokens } = await client.getToken({
