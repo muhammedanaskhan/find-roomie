@@ -10,7 +10,8 @@ const app = express();
 const allowedOrigins = [
     "http://localhost:3000",
     "https://www.findroomie.co",
-    "https://findroomie.co"
+    "https://findroomie.co",
+    "https://findroomie.vercel.app",
 ]
 
 const corsOptions = {
