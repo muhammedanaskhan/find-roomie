@@ -170,6 +170,50 @@ export function RegisterForm() {
         setShowPassword(!showPassword)
     }
 
+    const handleGuestLogin = async () => {
+        try {
+            NProgress.start();
+            const guestCredentials = {
+                email: "guest@findroomie.co",
+                password: "Guest@123"
+            };
+
+            const loginResult = await loginUser(guestCredentials);
+
+            if (loginResult.data.accessToken) {
+                const responseAccessToken = loginResult.data.accessToken;
+                const decodedToken = jwtDecode<{ exp: number }>(responseAccessToken);
+                const accessTokenExpiry = decodedToken.exp;
+                const accessTokenExpiryTime = new Date(accessTokenExpiry * 1000);
+
+                localStorage.setItem('accessToken', responseAccessToken);
+                localStorage.setItem('accessTokenExpiryTime', accessTokenExpiryTime.toString());
+
+                dispatch(
+                    setAuth({
+                        userName: loginResult.data.userName,
+                        email: loginResult.data.email,
+                        accessToken: responseAccessToken
+                    })
+                );
+
+                NProgress.done();
+                toast.success(`Logged in as Guest!`);
+
+                const responseIsUserAuthenticated = loginResult.data.isUserAuthenticated;
+                if (!responseIsUserAuthenticated) {
+                    localStorage.setItem('isUserAuthenticated', 'false');
+                    router.push('/login/personal-details');
+                } else {
+                    router.push('/');
+                }
+            }
+        } catch (error) {
+            NProgress.done();
+            toast.error('Guest login failed. Please try again.');
+        }
+    };
+
     return (
         <Card className=" p-6 sm:p-10 lg:p-12">
             <div className='flex justify-center items-center mb-8'>
@@ -266,6 +310,21 @@ export function RegisterForm() {
 
                     <p>Already have an account? <span><Link href='/login'>Login</Link></span></p>
                     <Button type="submit" className="w-full hover:bg-primaryBlue  bg-primaryBlue">Submit</Button>
+
+                    <div className="relative flex items-center my-4">
+                        <div className="flex-grow border-t border-gray-300"></div>
+                        <span className="flex-shrink mx-4 text-gray-400 text-sm">or</span>
+                        <div className="flex-grow border-t border-gray-300"></div>
+                    </div>
+
+                    <Button 
+                        type="button" 
+                        onClick={handleGuestLogin}
+                        variant="outline"
+                        className="w-full border-2 border-primaryBlue text-primaryBlue hover:bg-primaryBlue hover:text-white transition-colors"
+                    >
+                        🚀 Try as Guest
+                    </Button>
 
                 </form>
             </Form>
